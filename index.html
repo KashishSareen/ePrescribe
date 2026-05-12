@@ -44,7 +44,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    html { scroll-behavior: smooth; }
+    /* ── Global overflow fix ── */
+    html {
+      overflow-x: clip;
+      scroll-behavior: smooth;
+    }
+    body {
+      overflow-x: clip;
+      width: 100%;
+      position: relative;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    /* Force all sections and wrappers to stay within viewport */
+    .max-w-7xl, section, footer, nav { max-width: 100vw; }
+    section { overflow: hidden; position: relative; }
+
     .glass {
       background: rgba(255,255,255,0.08);
       backdrop-filter: blur(12px);
@@ -102,10 +117,7 @@
       border-radius: 16px;
       backdrop-filter: blur(10px);
     }
-    .ticker-wrap {
-      overflow: hidden;
-      white-space: nowrap;
-    }
+    .ticker-wrap { overflow: hidden; white-space: nowrap; }
     .ticker-inner {
       display: inline-flex;
       animation: ticker 30s linear infinite;
@@ -141,29 +153,60 @@
     }
     .animate-pulse-slow { animation: pulseSlow 4s ease-in-out infinite; }
 
-    /* hero responsive */
-    @media (max-width: 640px) {
-      .hero-cards-wrap { height: 340px !important; }
+    /* ── Hamburger bars ── */
+    .hb-bar {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background-color: #ffffff;
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
     }
+
+    /* ── Sections overflow guard ── */
+    section { overflow: hidden; position: relative; }
+
+    /* ── Hero cards responsive ── */
+    @media (max-width: 640px) {
+      .hero-cards-wrap { height: 300px !important; }
+    }
+
+    /* ── Footer responsive ── */
+    @media (max-width: 640px) {
+      .footer-grid { grid-template-columns: 1fr !important; }
+    }
+
+    /* ── Prevent any element from causing horizontal scroll ── */
+    img, svg, video { max-width: 100%; }
+    .hero-blob { max-width: none; }
+
+    /* ── Ensure minimum safe padding on small screens ── */
+    @media (max-width: 480px) {
+      .max-w-7xl { padding-left: 1.25rem !important; padding-right: 1.25rem !important; }
+    }
+
+    /* ── Nuclear overflow fix — catches anything missed ── */
+    * { max-width: 100%; }
+    .hero-blob, .ticker-inner, svg { max-width: none; }
   </style>
 </head>
 <body class="font-sans bg-white text-gray-800 antialiased">
 
   <!-- NAVBAR -->
-  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50" style="transition: background-color 0.4s ease, box-shadow 0.4s ease;">
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 w-full" style="transition: background-color 0.4s ease, box-shadow 0.4s ease;">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-4">
 
       <!-- Logo -->
-    <a href="#" class="flex items-center flex-shrink-0">
-  <div class="bg-white rounded-full px-4 py-2 shadow-lg">
-    <img
-      src="./images/eprescribeLogo.jpg"
-      alt="ePrescribe"
-      loading="lazy"
-      class="h-8 sm:h-9 w-auto object-contain"
-    />
-  </div>
-</a>
+      <a href="#" class="flex items-center flex-shrink-0">
+        <div class="bg-white rounded-full px-4 py-2 shadow-lg">
+          <img
+            src="./images/eprescribeLogo.jpg"
+            alt="ePrescribe"
+            loading="lazy"
+            class="h-8 sm:h-9 w-auto object-contain"
+          />
+        </div>
+      </a>
 
       <!-- Desktop Nav Links -->
       <div class="hidden md:flex items-center gap-8">
@@ -174,15 +217,18 @@
       </div>
 
       <!-- Mobile Hamburger -->
-      <button id="hamburger" class="md:hidden flex flex-col justify-center gap-[5px] p-2 rounded-lg hover:bg-white/10 transition-colors" aria-label="Toggle menu">
-        <span id="hb1" class="block w-5 h-0.5 bg-white rounded" style="transition: transform 0.3s ease;"></span>
-        <span id="hb2" class="block w-5 h-0.5 bg-white rounded" style="transition: opacity 0.3s ease;"></span>
-        <span id="hb3" class="block w-5 h-0.5 bg-white rounded" style="transition: transform 0.3s ease;"></span>
+      <button id="hamburger"
+        class="md:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 rounded-lg hover:bg-white/10 transition-colors flex-shrink-0 z-10"
+        style="cursor:pointer;"
+        aria-label="Toggle menu">
+        <span id="hb1" class="hb-bar"></span>
+        <span id="hb2" class="hb-bar"></span>
+        <span id="hb3" class="hb-bar"></span>
       </button>
     </div>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="md:hidden overflow-hidden" style="max-height:0; transition: max-height 0.35s ease; background-color:#0d2f52;">
+    <div id="mobile-menu" class="md:hidden overflow-hidden w-full" style="max-height:0; transition: max-height 0.35s ease; background-color:#0d2f52;">
       <div class="border-t border-white/10 px-4 py-3 flex flex-col gap-1">
         <a href="#"         onclick="closeMobileMenu()" class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl text-sm font-medium transition-all">Home</a>
         <a href="#features" onclick="closeMobileMenu()" class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl text-sm font-medium transition-all">Services</a>
@@ -217,7 +263,7 @@
     // Hamburger toggle
     document.getElementById('hamburger').addEventListener('click', function() {
       menuOpen = !menuOpen;
-      mobileMenu.style.maxHeight = menuOpen ? mobileMenu.scrollHeight + 'px' : '0';
+      mobileMenu.style.maxHeight = menuOpen ? '260px' : '0';
       hb1.style.transform = menuOpen ? 'translateY(7px) rotate(45deg)' : '';
       hb2.style.opacity   = menuOpen ? '0' : '1';
       hb3.style.transform = menuOpen ? 'translateY(-7px) rotate(-45deg)' : '';
@@ -233,52 +279,52 @@
   </script>
 
   <!-- HERO SECTION -->
-  <section class="relative min-h-screen bg-hero-gradient overflow-hidden flex items-center">
+  <section class="relative min-h-screen bg-hero-gradient flex items-center" style="overflow:hidden;">
 
     <!-- Decorative blobs -->
-    <div class="hero-blob w-96 h-96 bg-teal-400 top-[-80px] right-[-60px]"></div>
-    <div class="hero-blob w-80 h-80 bg-brand-400 bottom-[-40px] left-[-60px]"></div>
-    <div class="hero-blob w-64 h-64 bg-blue-300 top-1/2 left-1/3"></div>
+    <div class="hero-blob w-96 h-96 bg-teal-400" style="top:-80px; right:-60px;"></div>
+    <div class="hero-blob w-80 h-80 bg-brand-400" style="bottom:-40px; left:-60px;"></div>
+    <div class="hero-blob w-64 h-64 bg-blue-300" style="top:40%; left:30%;"></div>
 
     <!-- Grid pattern overlay -->
     <div class="absolute inset-0 opacity-5" style="background-image: url('data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'1\'%3E%3Cpath d=\'M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E');"></div>
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 pt-24 sm:pt-28 pb-20 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+    <div class="relative w-full max-w-7xl mx-auto px-5 sm:px-6 pt-24 sm:pt-28 pb-20">
+      <div class="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
 
       <!-- Left: Text Content -->
-        <div class="text-white">
+        <div class="text-white w-full min-w-0">
           <!-- Badge -->
-          <div class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-8">
-            <span class="w-2 h-2 rounded-full bg-teal-400 pulse-ring"></span>
-            <span class="text-teal-300 text-xs font-semibold uppercase tracking-widest">AI-Powered Healthcare Platform</span>
+          <div class="inline-flex items-center gap-2 glass rounded-full px-3 py-2 mb-6 max-w-full">
+            <span class="w-2 h-2 rounded-full bg-teal-400 pulse-ring flex-shrink-0"></span>
+            <span class="text-teal-300 text-xs font-semibold uppercase tracking-wider truncate">AI-Powered Healthcare Platform</span>
           </div>
 
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.05] mb-6">
+          <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black leading-[1.1] mb-5 break-words">
             Smart Clinic<br/>
             <span class="gradient-text">Management,</span><br/>
             Reimagined.
           </h1>
 
-          <p class="text-white/70 text-lg leading-relaxed mb-10 max-w-xl">
+          <p class="text-white/70 text-sm sm:text-base lg:text-lg leading-relaxed mb-8 max-w-xl">
             Built on healthcare compliance and best practices, ePrescribe is a secure, cloud-based, multi-doctor clinic management platform. Manage patient records, digital prescriptions, billing, and appointments — all in one paperless, mobile-friendly solution.
           </p>
 
           <!-- CTA Buttons -->
           <div class="mb-6">
-            
-            <div class="flex flex-wrap gap-3 sm:gap-4 mb-4">
+            <div class="flex flex-wrap gap-3 mb-4">
 
-              <!-- Book a Demo  -->
+              <!-- Book a Demo -->
               <a href="https://wa.me/919702053758?text=I%20want%20to%20start%20a%20free%20demo%20for%20ePrescribe"
                  target="_blank" rel="noopener noreferrer"
-                 class="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-bold px-7 sm:px-9 py-3.5 sm:py-4 rounded-full transition-all duration-200 shadow-xl hover:shadow-brand-600/40 hover:-translate-y-0.5 text-sm sm:text-base whitespace-nowrap">
+                 class="inline-flex items-center justify-center bg-brand-600 hover:bg-brand-500 text-white font-bold px-6 py-3 rounded-full transition-all duration-200 shadow-xl text-sm">
                 Book a Demo
               </a>
 
               <!-- Start Free Trial -->
               <a href="https://wa.me/919702053758?text=I%20want%20to%20start%20a%20free%20trial%20for%20ePrescribe"
                  target="_blank" rel="noopener noreferrer"
-                 class="inline-flex items-center justify-center gap-2 bg-teal-500 hover:bg-teal-400 text-white font-bold px-7 sm:px-9 py-3.5 sm:py-4 rounded-full transition-all duration-200 shadow-xl hover:shadow-teal-500/40 hover:-translate-y-0.5 text-sm sm:text-base whitespace-nowrap">
+                 class="inline-flex items-center justify-center bg-teal-500 hover:bg-teal-400 text-white font-bold px-6 py-3 rounded-full transition-all duration-200 shadow-xl text-sm">
                 Start Free Trial
               </a>
             </div>
@@ -311,8 +357,8 @@
         </div>
 
       <!-- Right: Animated rotating cards -->
-      <div class="flex justify-center lg:justify-end mt-10 lg:mt-0">
-        <div class="relative hero-cards-wrap flex justify-center items-start" style="height:460px; width:100%; max-width:420px;">
+      <div class="flex justify-center lg:justify-end mt-8 lg:mt-0 w-full min-w-0">
+        <div class="relative hero-cards-wrap flex justify-center items-start w-full overflow-hidden" style="height:400px; max-width:min(420px, 100%);">
 
           <!-- Card 1 – Patient Registration -->
           <div class="card-animate-1 absolute w-full">
@@ -359,9 +405,9 @@
             </div>
           </div>
 
-          <!-- Decorative blobs -->
-          <div class="absolute -top-4 -left-4 w-20 h-20 bg-teal-400/20 rounded-full blur-xl animate-pulse-slow pointer-events-none"></div>
-          <div class="absolute -bottom-6 -right-3 w-24 h-24 bg-brand-400/15 rounded-full blur-xl animate-pulse-slow pointer-events-none" style="animation-delay:1s;"></div>
+          <!-- Decorative blobs (contained, no negative offsets) -->
+          <div class="absolute top-0 left-0 w-20 h-20 bg-teal-400/20 rounded-full blur-xl animate-pulse-slow pointer-events-none"></div>
+          <div class="absolute bottom-0 right-0 w-24 h-24 bg-brand-400/15 rounded-full blur-xl animate-pulse-slow pointer-events-none" style="animation-delay:1s;"></div>
         </div>
       </div>
     </div>
@@ -945,7 +991,7 @@
   <footer class="bg-brand-950 text-white pt-14 pb-8">
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
 
-      <div class="flex flex-col md:flex-row items-center justify-evenly gap-[200px] mb-10">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-10 footer-grid">
 
         <!-- Col 1: Logo + description + social -->
         <div>
@@ -996,7 +1042,7 @@
         </div>
 
         <!-- Col 2: Quick Links -->
-        <div class=" w-[200px]">
+        <div>
           <h4 class="text-teal-400 font-bold text-base mb-6">Quick Links</h4>
           <ul class="space-y-4">
             <li><a href="#"         class="text-white/60 hover:text-white text-sm transition-colors">Home</a></li>
@@ -1007,7 +1053,7 @@
         </div>
 
         <!-- Col 3: Contact Us -->
-        <div class=" w-[500px]">
+        <div>
           <h4 class="text-teal-400 font-bold text-base mb-6">Contact Us</h4>
           <ul class="space-y-4">
             <li>
