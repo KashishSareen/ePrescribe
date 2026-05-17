@@ -1,960 +1,2485 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover"/>
-  <title>ePrescribe – Smart Clinic Management</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover"
+    />
+    <title>ePrescribe – Smart Clinic Management | Red & White Edition</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: { DEFAULT:'#1a56db', light:'#eff6ff', dark:'#1e3a8a', mid:'#2563eb' },
-            accent:  { DEFAULT:'#0ea5e9', light:'#e0f2fe' },
-            emerald: { DEFAULT:'#10b981', light:'#ecfdf5', dark:'#059669' },
-            ink:     { DEFAULT:'#0f172a', muted:'#475569', soft:'#94a3b8' },
-            brand:   { 50:'#eff6ff', 100:'#dbeafe', 200:'#bfdbfe', 500:'#3b82f6', 600:'#2563eb', 700:'#1d4ed8', 950:'#172554' },
-            teal:    { 400:'#2dd4bf', 500:'#14b8a6', 600:'#0d9488' },
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              // ---- RED & WHITE THEME (inspired by reference) ----
+              primary: {
+                DEFAULT: "#dc2626",
+                light: "#fff1f1",
+                dark: "#991b1b",
+                mid: "#ef4444",
+              },
+              accent: { DEFAULT: "#b91c1c", light: "#fee2e2" },
+              brand: {
+                50: "#fff1f1",
+                100: "#fee2e2",
+                200: "#fecaca",
+                500: "#ef4444",
+                600: "#dc2626",
+                700: "#b91c1c",
+                800: "#991b1b",
+                900: "#7f1d1d",
+                950: "#450a0a",
+              },
+              red: {
+                50: "#fef2f2",
+                100: "#fee2e2",
+                200: "#fecaca",
+                300: "#fca5a5",
+                400: "#f87171",
+                500: "#ef4444",
+                600: "#dc2626",
+                700: "#b91c1c",
+                800: "#991b1b",
+                900: "#7f1d1d",
+              },
+              ink: { DEFAULT: "#111827", muted: "#4b5563", soft: "#9ca3af" },
+            },
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
+            },
           },
-          fontFamily: { sans:['Plus Jakarta Sans','Inter','system-ui','sans-serif'] },
+        },
+      };
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <!-- AOS -->
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+
+    <style>
+      /* ─── BASE (pure red/white vibe) ─── */
+      html,
+      body {
+        overflow-x: hidden !important;
+        scroll-behavior: smooth;
+        width: 100%;
+        max-width: 100vw;
+        background: #fff;
+      }
+      body {
+        font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
+        color: #0f172a;
+        -webkit-font-smoothing: antialiased;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      section,
+      footer,
+      nav,
+      header {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+      img,
+      svg,
+      video {
+        max-width: 100%;
+        height: auto;
+      }
+      [id] {
+        scroll-margin-top: 80px;
+      }
+
+      /* scrollbar red */
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #dc2626;
+        border-radius: 3px;
+      }
+
+      /* Gradient text red/white */
+      .gt {
+        background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .gt2 {
+        background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* navbar - white with subtle red border */
+      #navbar {
+        transition:
+          background 0.4s,
+          box-shadow 0.4s,
+          border-bottom 0.4s;
+      }
+      #navbar.scrolled {
+        background: rgba(255, 255, 255, 0.98) !important;
+        box-shadow: 0 2px 24px rgba(220, 38, 38, 0.12) !important;
+        border-bottom: 1px solid #fecaca !important;
+        backdrop-filter: blur(16px);
+      }
+
+      .nav-link {
+        position: relative;
+        transition: color 0.25s;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #111827;
+      }
+      .nav-link:hover {
+        color: #dc2626;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #dc2626, #ef4444);
+        border-radius: 2px;
+        transition: width 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+
+      /* hamburger red accent */
+      .hb-bar {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #0f172a;
+        border-radius: 2px;
+        transition:
+          transform 0.3s,
+          opacity 0.3s;
+      }
+
+      /* hero BG - white with red gradient whispers */
+      .hero-bg {
+        background: linear-gradient(150deg, #fff 0%, #fff5f5 45%, #ffffff 100%);
+        position: relative;
+        overflow: hidden;
+      }
+      .hero-mesh {
+        position: absolute;
+        inset: 0;
+        background-image:
+          radial-gradient(
+            circle at 20% 50%,
+            rgba(220, 38, 38, 0.05) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            circle at 80% 20%,
+            rgba(239, 68, 68, 0.04) 0%,
+            transparent 45%
+          ),
+          radial-gradient(
+            circle at 60% 80%,
+            rgba(185, 28, 28, 0.03) 0%,
+            transparent 40%
+          );
+        pointer-events: none;
+      }
+      .hero-dots {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle, #fecaca 1px, transparent 1px);
+        background-size: 36px 36px;
+        opacity: 0.4;
+        mask-image: radial-gradient(
+          ellipse 75% 70% at 75% 50%,
+          black 10%,
+          transparent 80%
+        );
+        pointer-events: none;
+      }
+
+      /* red themed blobs */
+      .blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+      }
+
+      /* buttons primary - red gradient */
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 0.85rem 1.75rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(220, 38, 38, 0.45);
+      }
+
+      .btn-emerald {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 0.85rem 1.75rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3);
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .btn-emerald:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 28px rgba(220, 38, 38, 0.4);
+      }
+
+      .btn-glass {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: rgba(220, 38, 38, 0.08);
+        border: 1.5px solid rgba(220, 38, 38, 0.3);
+        color: #b91c1c;
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding: 0.85rem 1.75rem;
+        border-radius: 12px;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        backdrop-filter: blur(8px);
+      }
+      .btn-glass:hover {
+        background: rgba(220, 38, 38, 0.12);
+        transform: translateY(-2px);
+      }
+
+      /* badges red-white */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #fff1f1;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+      }
+      .badge-teal {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #fff1f1;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+      }
+      .badge-white {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(220, 38, 38, 0.12);
+        border: 1px solid rgba(220, 38, 38, 0.3);
+        color: #b91c1c;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+      }
+
+      /* pulse red */
+      @keyframes pulse-ring {
+        0% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+        }
+        70% {
+          transform: scale(1);
+          box-shadow: 0 0 0 12px rgba(220, 38, 38, 0);
+        }
+        100% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
         }
       }
-    }
-  </script>
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <!-- AOS -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
-
-  <style>
-    /* ─── BASE ─── */
-    html,body{overflow-x:hidden!important;scroll-behavior:smooth;width:100%;max-width:100vw;background:#fff}
-    body{font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;color:#0f172a;-webkit-font-smoothing:antialiased}
-    *,*::before,*::after{box-sizing:border-box}
-    section,footer,nav,header{overflow-x:hidden;max-width:100%}
-    img,svg,video{max-width:100%;height:auto}
-    [id]{scroll-margin-top:80px}
-
-    /* ─── SCROLLBAR ─── */
-    ::-webkit-scrollbar{width:5px}
-    ::-webkit-scrollbar-track{background:#f1f5f9}
-    ::-webkit-scrollbar-thumb{background:#1a56db;border-radius:3px}
-
-    /* ─── GRADIENT TEXT ─── */
-    .gt{background:linear-gradient(135deg,#1a56db 0%,#0ea5e9 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-    .gt2{background:linear-gradient(135deg,#0ea5e9 0%,#10b981 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-
-    /* ─── NAVBAR ─── */
-    #navbar{transition:background .4s,box-shadow .4s,border-bottom .4s}
-    #navbar.scrolled{background:rgba(255,255,255,.97)!important;box-shadow:0 2px 24px rgba(26,86,219,.12)!important;border-bottom:1px solid #dbeafe!important;backdrop-filter:blur(16px)}
-
-    .nav-link{position:relative;transition:color .25s;font-weight:600;font-size:.875rem;color:#0f172a}
-    .nav-link:hover{color:#1a56db}
-    .nav-link::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:linear-gradient(90deg,#1a56db,#0ea5e9);border-radius:2px;transition:width .3s cubic-bezier(.23,1,.32,1)}
-    .nav-link:hover::after{width:100%}
-
-    /* ─── HAMBURGER ─── */
-    .hb-bar{display:block;width:22px;height:2px;background:#0f172a;border-radius:2px;transition:transform .3s,opacity .3s}
-
-    /* ─── HERO BG ─── */
-    .hero-bg{background:linear-gradient(150deg,#f0f7ff 0%,#e8f4fd 45%,#f0fdf4 100%);position:relative;overflow:hidden}
-    .hero-mesh{position:absolute;inset:0;background-image:radial-gradient(circle at 20% 50%,rgba(26,86,219,.1) 0%,transparent 50%),radial-gradient(circle at 80% 20%,rgba(14,165,233,.08) 0%,transparent 45%),radial-gradient(circle at 60% 80%,rgba(16,185,129,.07) 0%,transparent 40%);pointer-events:none}
-    .hero-dots{position:absolute;inset:0;background-image:radial-gradient(circle,#bfdbfe 1px,transparent 1px);background-size:36px 36px;opacity:.35;mask-image:radial-gradient(ellipse 75% 70% at 75% 50%,black 10%,transparent 80%);pointer-events:none}
-
-    /* ─── BLOB ─── */
-    .blob{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
-
-    /* ─── BUTTONS ─── */
-    .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(135deg,#1a56db,#2563eb);color:#fff;font-weight:700;font-size:.9rem;padding:.85rem 1.75rem;border-radius:12px;box-shadow:0 4px 20px rgba(26,86,219,.3);transition:all .3s cubic-bezier(.23,1,.32,1)}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(26,86,219,.45)}
-
-    .btn-emerald{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;background:linear-gradient(135deg,#0ea5e9,#10b981);color:#fff;font-weight:700;font-size:.9rem;padding:.85rem 1.75rem;border-radius:12px;box-shadow:0 4px 20px rgba(14,165,233,.3);transition:all .3s cubic-bezier(.23,1,.32,1)}
-    .btn-emerald:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(14,165,233,.4)}
-
-    .btn-glass{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.12);border:1.5px solid rgba(255,255,255,.3);color:#fff;font-weight:600;font-size:.9rem;padding:.85rem 1.75rem;border-radius:12px;transition:all .3s cubic-bezier(.23,1,.32,1);backdrop-filter:blur(8px)}
-    .btn-glass:hover{background:rgba(255,255,255,.2);transform:translateY(-2px)}
-
-    /* ─── BADGE ─── */
-    .badge{display:inline-flex;align-items:center;gap:.4rem;background:#eff6ff;border:1px solid #bfdbfe;color:#1a56db;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border-radius:999px}
-    .badge-teal{display:inline-flex;align-items:center;gap:.4rem;background:#f0fdfa;border:1px solid rgba(20,184,166,.25);color:#0d9488;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border-radius:999px}
-    .badge-white{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.9);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.35rem .9rem;border-radius:999px}
-
-    /* ─── PULSE ─── */
-    @keyframes pulse-ring{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(26,86,219,.4)}70%{transform:scale(1);box-shadow:0 0 0 12px rgba(26,86,219,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(26,86,219,0)}}
-    .pulse-ring{animation:pulse-ring 2.5s ease-in-out infinite}
-    @keyframes pulse-green{0%{transform:scale(.95);box-shadow:0 0 0 0 rgba(16,185,129,.4)}70%{transform:scale(1);box-shadow:0 0 0 12px rgba(16,185,129,0)}100%{transform:scale(.95);box-shadow:0 0 0 0 rgba(16,185,129,0)}}
-    .pulse-green{animation:pulse-green 2.5s ease-in-out infinite}
-
-    /* ─── FLOAT ─── */
-    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-    .float-anim{animation:float 5s ease-in-out infinite}
-
-    /* ─── HERO CARD CYCLE ─── */
-    @keyframes cardCycle1{0%,100%{opacity:0;transform:translateY(28px) scale(.95)}5%,28%{opacity:1;transform:translateY(0) scale(1)}33%,95%{opacity:0;transform:translateY(-16px) scale(.95)}}
-    @keyframes cardCycle2{0%,33%{opacity:0;transform:translateY(28px) scale(.95)}38%,61%{opacity:1;transform:translateY(0) scale(1)}66%,100%{opacity:0;transform:translateY(-16px) scale(.95)}}
-    @keyframes cardCycle3{0%,66%{opacity:0;transform:translateY(28px) scale(.95)}71%,94%{opacity:1;transform:translateY(0) scale(1)}99%,100%{opacity:0;transform:translateY(-16px) scale(.95)}}
-    .card-animate-1{animation:cardCycle1 9s ease-in-out infinite}
-    .card-animate-2{animation:cardCycle2 9s ease-in-out infinite}
-    .card-animate-3{animation:cardCycle3 9s ease-in-out infinite}
-
-    @keyframes pulseSlow{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.8;transform:scale(1.1)}}
-    .animate-pulse-slow{animation:pulseSlow 4s ease-in-out infinite}
-
-    /* ─── TICKER ─── */
-    .ticker-wrap{overflow:hidden;white-space:nowrap;width:100%}
-    .ticker-inner{display:inline-flex;animation:ticker 32s linear infinite}
-    @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-
-    /* ─── FEATURE CARD ─── */
-    .feature-card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:1.5rem;transition:all .35s cubic-bezier(.23,1,.32,1);cursor:default;position:relative;overflow:hidden}
-    .feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#1a56db,#0ea5e9,#10b981);transform:scaleX(0);transform-origin:left;transition:transform .35s cubic-bezier(.23,1,.32,1)}
-    .feature-card:hover{transform:translateY(-6px);box-shadow:0 20px 48px rgba(26,86,219,.12);border-color:#bfdbfe}
-    .feature-card:hover::before{transform:scaleX(1)}
-    .feature-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;margin-bottom:1rem;flex-shrink:0}
-
-    /* ─── WHY CARD ─── */
-    .why-card{display:flex;align-items:flex-start;gap:1rem;padding:1.25rem 1.5rem;border-radius:16px;background:#fff;border:1px solid #e2e8f0;transition:all .3s cubic-bezier(.23,1,.32,1)}
-    .why-card:hover{border-color:#bfdbfe;box-shadow:0 8px 28px rgba(26,86,219,.1);transform:translateY(-3px)}
-
-    /* ─── AI CARD ─── */
-    .ai-card{border-radius:22px;padding:2rem;text-align:center;transition:all .35s cubic-bezier(.23,1,.32,1);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(10px)}
-    .ai-card:hover{background:rgba(255,255,255,.15);transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,.2)}
-    .ai-card-icon{width:72px;height:72px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1.5rem;transition:transform .3s}
-    .ai-card:hover .ai-card-icon{transform:scale(1.1)}
-
-    /* ─── TESTIMONIAL CARD ─── */
-    .testi-card{background:#fff;border:1px solid #e2e8f0;border-top:3px solid;border-radius:20px;padding:1.75rem;transition:all .35s cubic-bezier(.23,1,.32,1);display:flex;flex-direction:column;align-items:center;text-align:center}
-    .testi-card:hover{transform:translateY(-5px);box-shadow:0 16px 40px rgba(26,86,219,.1)}
-
-    /* ─── MODULE CARD ─── */
-    .module-card{display:flex;align-items:flex-start;gap:.875rem;padding:1rem 1.25rem;border-radius:12px;background:#f8fafc;border:1px solid #e2e8f0;transition:all .3s cubic-bezier(.23,1,.32,1)}
-    .module-card:hover{border-color:#bfdbfe;background:#eff6ff;transform:translateX(4px)}
-
-    /* ─── FAQ ─── */
-    .faq-item{border:1px solid #e2e8f0;border-radius:16px;background:#fff;overflow:hidden;transition:all .3s cubic-bezier(.23,1,.32,1)}
-    .faq-item:hover,.faq-item.faq-open{border-color:#bfdbfe;box-shadow:0 4px 20px rgba(26,86,219,.08)}
-    .faq-item.faq-open{background:#f8faff}
-    .faq-btn{width:100%;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 1.5rem;text-align:left;background:transparent;cursor:pointer;border:none;outline:none}
-    .faq-answer{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.23,1,.32,1),padding .3s}
-    .faq-answer.open{max-height:300px}
-    .faq-icon{transition:transform .35s cubic-bezier(.23,1,.32,1);flex-shrink:0}
-    .faq-icon.open{transform:rotate(180deg)}
-
-    /* ─── CTA BG ─── */
-    .cta-bg{background:linear-gradient(135deg,#1e3a8a 0%,#1a56db 45%,#0ea5e9 80%,#10b981 100%);position:relative;overflow:hidden}
-    .cta-pattern{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.07) 1px,transparent 1px);background-size:28px 28px;pointer-events:none}
-    .cta-glow{position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none}
-
-    /* ─── SECTION DIVIDER ─── */
-    .section-divider{height:1px;background:linear-gradient(90deg,transparent,#bfdbfe 30%,#bfdbfe 70%,transparent)}
-
-    /* ─── HERO GRID MOBILE ─── */
-    @media(max-width:1023px){.hero-grid{grid-template-columns:1fr!important}}
-    @media(max-width:640px){.hero-cards-wrap{height:340px!important}.footer-grid{grid-template-columns:1fr!important;gap:2rem}}
-
-    /* ─── FOOTER GRID ─── */
-    .footer-grid{display:grid;gap:2rem}
-    @media(min-width:640px) and (max-width:1023px){.footer-grid{grid-template-columns:repeat(2,1fr)}}
-    @media(min-width:1024px){.footer-grid{grid-template-columns:repeat(3,1fr)}}
-
-    /* ─── TRUST PILLS ─── */
-    .trust-pill{display:inline-flex;align-items:center;gap:.5rem;background:#fff;border:1px solid #e2e8f0;border-radius:999px;padding:.45rem 1rem;font-size:.75rem;font-weight:600;color:#475569;box-shadow:0 1px 6px rgba(0,0,0,.06)}
-
-    /* ─── MODAL ─── */
-    @keyframes modalIn{from{opacity:0;transform:scale(.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}
-
-    /* ─── SCROLL TOP ─── */
-    #scrolltop{position:fixed;bottom:1.75rem;right:1.75rem;z-index:100;width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1a56db,#0ea5e9);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 6px 24px rgba(26,86,219,.4);opacity:0;transform:translateY(12px);transition:all .35s cubic-bezier(.23,1,.32,1);pointer-events:none;border:none}
-    #scrolltop.visible{opacity:1;transform:none;pointer-events:auto}
-    #scrolltop:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(26,86,219,.55)}
-
-    /* ─── SECTION LABEL ─── */
-    .section-label{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-
-    /* ─── GLASS ─── */
-    .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.15)}
-  </style>
-</head>
-<body>
-
-<!-- NAVBAR -->
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 w-full" style="background:rgba(255,255,255,.97);box-shadow:0 2px 24px rgba(26,86,219,.1);border-bottom:1px solid #dbeafe;backdrop-filter:blur(16px);transition:background .4s,box-shadow .4s,border-bottom .4s">
-  <div class="max-w-7xl mx-auto px-5 sm:px-8 py-3.5 flex items-center justify-between gap-4">
-
-    <!-- Logo -->
-    <a href="#" class="flex items-center flex-shrink-0">
-      <div id="logo-wrap" class="bg-white rounded-full px-4 py-2 shadow-md shadow-blue-100/60">
-        <img src="./images/eprescribeLogo.jpg" alt="ePrescribe" loading="lazy" class="h-8 sm:h-9 w-auto object-contain"/>
-      </div>
-    </a>
-
-    <!-- Right: Desktop Links + Hamburger -->
-    <div class="flex items-center gap-3">
-      <div class="hidden md:flex items-center gap-8 mr-2" id="dlinks">
-        <a href="#"         id="nl1" class="nav-link transition-colors" style="color:#0f172a">Home</a>
-        <a href="#features" id="nl2" class="nav-link transition-colors" style="color:#0f172a">Services</a>
-        <a href="#about"    id="nl3" class="nav-link transition-colors" style="color:#0f172a">About Us</a>
-        <a href="#contact"  id="nl4" class="nav-link transition-colors" style="color:#0f172a">Contact</a>
-      </div>
-      <button id="hamburger"
-        class="md:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 rounded-xl bg-blue-50 border border-blue-100 hover:bg-blue-100 transition-colors flex-shrink-0 cursor-pointer"
-        aria-label="Toggle menu">
-        <span id="hb1" class="hb-bar"></span>
-        <span id="hb2" class="hb-bar"></span>
-        <span id="hb3" class="hb-bar"></span>
-      </button>
-    </div>
-  </div>
-
-  <!-- Mobile Menu -->
-  <div id="mobile-menu" class="md:hidden overflow-hidden w-full" style="max-height:0;transition:max-height .35s ease;background:#1e3a8a;">
-    <div class="border-t border-white/10 px-5 py-3 flex flex-col gap-1">
-      <a href="#"         onclick="closeMobileMenu()" class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl text-sm font-medium transition-all">Home</a>
-      <a href="#features" onclick="closeMobileMenu()" class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl text-sm font-medium transition-all">Services</a>
-      <a href="#about"    onclick="closeMobileMenu()" class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl text-sm font-medium transition-all">About Us</a>
-      <a href="#contact"  onclick="closeMobileMenu()" class="text-white/80 hover:text-white hover:bg-white/10 px-4 py-3 rounded-xl text-sm font-medium transition-all">Contact</a>
-    </div>
-  </div>
-</nav>
-
-<script>
-  const navbar=document.getElementById('navbar'),mm=document.getElementById('mobile-menu');
-  const hb1=document.getElementById('hb1'),hb2=document.getElementById('hb2'),hb3=document.getElementById('hb3');
-  const navLinks=[document.getElementById('nl1'),document.getElementById('nl2'),document.getElementById('nl3'),document.getElementById('nl4')];
-  let menuOpen=false;
-  window.addEventListener('scroll',()=>{
-    document.getElementById('scrolltop').classList.toggle('visible',window.scrollY>400);
-    if(menuOpen)closeMobileMenu();
-  });
-  document.getElementById('hamburger').addEventListener('click',()=>{
-    menuOpen=!menuOpen;
-    mm.style.maxHeight=menuOpen?'260px':'0';
-    hb1.style.transform=menuOpen?'translateY(7px) rotate(45deg)':'';
-    hb2.style.opacity=menuOpen?'0':'1';
-    hb3.style.transform=menuOpen?'translateY(-7px) rotate(-45deg)':'';
-  });
-  function closeMobileMenu(){menuOpen=false;mm.style.maxHeight='0';hb1.style.transform='';hb2.style.opacity='1';hb3.style.transform='';}
-</script>
-
-<!-- HERO SECTION -->
-<section class="hero-bg relative min-h-screen flex items-center">
-  <div class="hero-mesh"></div>
-  <div class="hero-dots"></div>
-
-  <div class="blob w-96 h-96" style="top:-100px;right:-80px;background:#bfdbfe;opacity:.45"></div>
-  <div class="blob w-80 h-80" style="bottom:-60px;left:-80px;background:#a7f3d0;opacity:.4"></div>
-  <div class="blob w-64 h-64" style="top:45%;left:35%;background:#ddd6fe;opacity:.3"></div>
-
-  <div class="relative w-full max-w-7xl mx-auto px-5 sm:px-8 pt-28 pb-20 overflow-hidden">
-    <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center hero-grid">
-
-      <!-- LEFT -->
-      <div class="w-full min-w-0 order-1">
-        <div class="badge mb-6" data-aos="fade-up" data-aos-duration="600">
-          <span class="w-2 h-2 rounded-full pulse-ring flex-shrink-0" style="background:#1a56db"></span>
-          AI-Powered Healthcare Platform
-        </div>
-
-        <h1 class="font-black leading-[1.05] mb-6 text-gray-900" style="font-size:clamp(2.2rem,5vw,4.4rem)" data-aos="fade-up" data-aos-delay="80" data-aos-duration="700">
-          Smart Clinic<br/>
-          <span class="gt">Management,</span><br/>
-          Reimagined.
-        </h1>
-
-        <p class="text-gray-500 leading-relaxed mb-8 max-w-lg" style="font-size:clamp(.95rem,2vw,1.1rem)" data-aos="fade-up" data-aos-delay="150" data-aos-duration="700">
-          Built on healthcare compliance and best practices, ePrescribe is a secure, cloud-based, multi-doctor clinic management platform. Manage patient records, digital prescriptions, billing, and appointments — all in one paperless, mobile-friendly solution.
-        </p>
-        <div class="flex flex-wrap gap-3 mb-5" data-aos="fade-up" data-aos-delay="220" data-aos-duration="600">
-          <a href="https://wa.me/919702053758?text=I%20want%20to%20start%20a%20free%20demo%20for%20ePrescribe"
-             target="_blank" rel="noopener noreferrer" class="btn-primary rounded-full">Book a Demo</a>
-          <a href="https://wa.me/919702053758?text=I%20want%20to%20start%20a%20free%20trial%20for%20ePrescribe"
-             target="_blank" rel="noopener noreferrer" class="btn-emerald rounded-full">Start Free Trial</a>
-        </div>
-
-        <p class="text-gray-400 text-sm mb-8" data-aos="fade-up" data-aos-delay="280" data-aos-duration="600">
-          Existing client?
-          <button onclick="openLoginModal()" class="font-semibold underline underline-offset-2 hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer" style="color:#1a56db">Login here →</button>
-        </p>
-
-        <div class="flex flex-wrap gap-2" data-aos="fade-up" data-aos-delay="340" data-aos-duration="600">
-          <span class="trust-pill"><span style="color:#10b981">✓</span> HIPAA Compliant</span>
-          <span class="trust-pill"><span style="color:#10b981">✓</span> 500+ Clinics</span>
-          <span class="trust-pill"><span style="color:#10b981">✓</span> AI-Powered</span>
-          <span class="trust-pill"><span style="color:#10b981">✓</span> 99.9% Uptime</span>
-        </div>
-
-        <!-- Stats row -->
-        <div class="flex flex-wrap gap-6 mt-8 pt-8 border-t border-gray-100" data-aos="fade-up" data-aos-delay="400" data-aos-duration="600">
-          <div>
-            <p class="text-2xl font-black" style="color:#1a56db">500+</p>
-            <p class="text-xs text-gray-400 font-medium">Clinics Onboarded</p>
-          </div>
-          <div class="w-px bg-gray-100"></div>
-          <div>
-            <p class="text-2xl font-black" style="color:#0ea5e9">1M+</p>
-            <p class="text-xs text-gray-400 font-medium">Prescriptions Generated</p>
-          </div>
-          <div class="w-px bg-gray-100"></div>
-          <div>
-            <p class="text-2xl font-black" style="color:#10b981">99.9%</p>
-            <p class="text-xs text-gray-400 font-medium">Uptime SLA</p>
-          </div>
-          <div class="w-px bg-gray-100"></div>
-          <div>
-            <p class="text-2xl font-black text-gray-900">24/7</p>
-            <p class="text-xs text-gray-400 font-medium">Support Available</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- RIGHT: Rotating cards -->
-      <div class="flex justify-center lg:justify-end mt-8 lg:mt-0 w-full min-w-0 order-2">
-        <div class="hero-cards-wrap relative flex justify-center items-start w-full float-anim" style="height:380px;max-width:min(420px,100%)">
-
-          <div class="card-animate-1 absolute w-full">
-            <div class="bg-white rounded-3xl p-7 shadow-2xl border border-blue-50/80 overflow-hidden relative" style="background:linear-gradient(135deg,#fff 60%,#f0fdf4 100%)">
-              <div class="absolute bottom-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(16,185,129,.15) 0%,transparent 70%);transform:translate(30%,30%)"></div>
-              <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#3b82f6,#60a5fa)">
-                <i class="fas fa-user-plus text-white text-xl"></i>
-              </div>
-              <h3 class="font-black text-gray-900 text-xl mb-3">Patient Registration</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-5">Seamless digital onboarding with automated data capture and verification for quick patient onboarding.</p>
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full" style="background:#10b981"></span>
-                <span class="text-sm font-semibold" style="color:#10b981">Active feature</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card-animate-2 absolute w-full">
-            <div class="bg-white rounded-3xl p-7 shadow-2xl border border-blue-50/80 overflow-hidden relative" style="background:linear-gradient(135deg,#fff 60%,#f0fdf4 100%)">
-              <div class="absolute bottom-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(16,185,129,.15) 0%,transparent 70%);transform:translate(30%,30%)"></div>
-              <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8)">
-                <i class="fas fa-chart-line text-white text-xl"></i>
-              </div>
-              <h3 class="font-black text-gray-900 text-xl mb-3">Live Analytics</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-5">Real-time clinic reports, performance metrics, and comprehensive KPIs in one intuitive dashboard.</p>
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full" style="background:#10b981"></span>
-                <span class="text-sm font-semibold" style="color:#10b981">Real-time data</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="card-animate-3 absolute w-full">
-            <div class="bg-white rounded-3xl p-7 shadow-2xl border border-blue-50/80 overflow-hidden relative" style="background:linear-gradient(135deg,#fff 60%,#f0fdf4 100%)">
-              <div class="absolute bottom-0 right-0 w-32 h-32 rounded-full" style="background:radial-gradient(circle,rgba(16,185,129,.15) 0%,transparent 70%);transform:translate(30%,30%)"></div>
-              <div class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5" style="background:linear-gradient(135deg,#7c3aed,#6366f1)">
-                <i class="fas fa-prescription-bottle-medical text-white text-xl"></i>
-              </div>
-              <h3 class="font-black text-gray-900 text-xl mb-3">Smart Prescriptions</h3>
-              <p class="text-gray-400 text-sm leading-relaxed mb-5">AI-powered prescription generation with automatic dosage checks and drug interaction alerts.</p>
-              <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full" style="background:#10b981"></span>
-                <span class="text-sm font-semibold" style="color:#10b981">AI-powered</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="absolute top-0 left-0 w-24 h-24 rounded-full blur-2xl animate-pulse-slow" style="background:#bfdbfe;opacity:.6"></div>
-          <div class="absolute bottom-0 right-0 w-28 h-28 rounded-full blur-2xl animate-pulse-slow" style="background:#a7f3d0;opacity:.5;animation-delay:1s"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Wave -->
-  <div class="absolute bottom-0 left-0 right-0 pointer-events-none">
-    <svg viewBox="0 0 1440 70" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="width:100%;display:block">
-      <path d="M0 70L60 60C120 50 240 32 360 27C480 22 600 30 720 34C840 38 960 38 1080 34C1200 30 1320 22 1380 18L1440 14V70H0Z" fill="white"/>
-    </svg>
-  </div>
-</section>
-
-<!--  TRUST TICKER -->
-<section class="py-4 border-b border-gray-100" style="background:linear-gradient(90deg,#eff6ff,#f0fdfa,#eff6ff)">
-  <div class="ticker-wrap">
-    <div class="ticker-inner">
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> HIPAA Compliant</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> Cloud-Based Platform</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> AI-Powered Prescriptions</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> Multi-Doctor Support</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> Mobile Friendly</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> 24/7 Support</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> SSL Encrypted</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> Paperless Workflow</span>
-      <!-- duplicate -->
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> HIPAA Compliant</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> Cloud-Based Platform</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> AI-Powered Prescriptions</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> Multi-Doctor Support</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> Mobile Friendly</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> 24/7 Support</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> SSL Encrypted</span>
-      <span class="inline-flex items-center gap-2 mx-8 text-gray-400 text-sm font-medium whitespace-nowrap"><span style="color:#1a56db;font-weight:700">✓</span> Paperless Workflow</span>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section id="features" class="py-24" style="background:linear-gradient(180deg,#fff 0%,#f8faff 60%,#fff 100%)">
-  <div class="max-w-7xl mx-auto px-5 sm:px-6">
-
-    <div class="text-center mb-16" data-aos="fade-up">
-      <div class="badge mx-auto mb-4">Complete Suite</div>
-      <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
-        Complete Clinic <span class="gt">Management Suite</span>
-      </h2>
-      <p class="text-gray-500 text-lg max-w-2xl mx-auto">Everything your clinic needs, in one powerful platform — from patient registration to AI-powered prescriptions.</p>
-      <div class="mt-6 h-1 w-24 rounded-full mx-auto" style="background:linear-gradient(90deg,#1a56db,#0ea5e9,#10b981)"></div>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-      <!-- 17 feature cards -->
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">👤</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Patient Registration</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Seamless digital onboarding with automated data capture and verification.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="60">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">📅</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Appointment Management</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Smart scheduling with reminders, follow-ups, and slot availability tracking.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="120">
-        <div class="feature-icon bg-teal-50"><span class="text-2xl">✍️</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">AI-Powered Prescriptions</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Create accurate digital prescriptions with automatic dosage checks and drug interaction alerts.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="180">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">📁</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Electronic Health Records</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Maintain comprehensive patient histories, lab results, and medical documents in one secure location.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">📸</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Store Photos &amp; Videos</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Attach clinical photos or videos directly to patient records for future reference.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="60">
-        <div class="feature-icon bg-teal-50"><span class="text-2xl">💳</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Billing &amp; Payments</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Generate invoices, process online payments, and track outstanding balances effortlessly.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="120">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">💬</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Online Consultations</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Offer secure video or chat consultations, share prescriptions instantly, and manage telehealth sessions.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="180">
-        <div class="feature-icon bg-teal-50"><span class="text-2xl">☁️</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Secure Cloud Storage</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Bank-level SSL encryption ensures patient data remains private and protected.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">🔔</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Notifications &amp; Reminders</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Automated alerts for appointments, follow-ups, and prescription renewals.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="60">
-        <div class="feature-icon bg-teal-50"><span class="text-2xl">⚡</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">24/7 Support</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Instant technical assistance via chat, WhatsApp, or Google Meet — anytime you need it.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="120">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">🛡️</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">HIPAA Compliant</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Ensure patient data privacy and security with strict HIPAA standards.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="180">
-        <div class="feature-icon bg-teal-50"><span class="text-2xl">📊</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Admin Dashboard &amp; Analytics</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Manage staff, monitor operations, and track clinic performance with visual analytics.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">🩺</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Treatment &amp; Procedures</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Manage multi-visit treatments, fixed-cost procedures, and long-term care plans efficiently.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="60">
-        <div class="feature-icon bg-teal-50"><span class="text-2xl">🧠</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">CRM</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Centralized patient relationship management with visit history, follow-ups, and communication tracking.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="120">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">🏠</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Home Visit Management</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Manage home visit appointments with patient details, visit tracking, and doctor availability.</p>
-      </div>
-      <div class="feature-card" data-aos="fade-up" data-aos-delay="180">
-        <div class="feature-icon bg-teal-50"><span class="text-2xl">📦</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Inventory Management</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">Track medicines, consumables, and stock levels with alerts for low inventory and expiry.</p>
-      </div>
-      <div class="feature-card sm:col-span-2 lg:col-span-4 max-w-sm mx-auto w-full" data-aos="fade-up" data-aos-delay="60">
-        <div class="feature-icon bg-blue-50"><span class="text-2xl">📋</span></div>
-        <h3 class="font-bold text-gray-900 mb-2 text-sm">Smart Attendance</h3>
-        <p class="text-gray-700 text-xs leading-relaxed">RFID/NFC-based contactless staff attendance — tap, track, and auto-calculate working hours, overtime, and salary. No biometric hassle, no manual entry.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- WHY EPRESCRIBE -->
-<section class="py-20 border-t border-gray-100" style="background:linear-gradient(180deg,#f0f7ff 0%,#fff 100%)">
-  <div class="max-w-7xl mx-auto px-5 sm:px-6">
-    <div class="text-center mb-14" data-aos="fade-up">
-      <div class="badge-teal mx-auto mb-4">Why ePrescribe?</div>
-      <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mb-3">Built to Make Clinics Better</h2>
-      <p class="text-gray-500 max-w-xl mx-auto">Designed by healthcare professionals, for healthcare professionals.</p>
-      <div class="mt-5 h-1 w-20 rounded-full mx-auto" style="background:linear-gradient(90deg,#0d9488,#14b8a6)"></div>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      <div class="why-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="w-11 h-11 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center flex-shrink-0 text-primary" style="color:#1a56db">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        </div>
-        <div><h4 class="font-bold text-gray-900 text-sm mb-1">Reduces Administrative Burden</h4><p class="text-gray-700 text-xs leading-relaxed">Saves time on manual tasks so staff &amp; doctors can focus more on patient care.</p></div>
-      </div>
-      <div class="why-card" data-aos="fade-up" data-aos-delay="80">
-        <div class="w-11 h-11 bg-teal-50 border border-teal-100 rounded-xl flex items-center justify-center flex-shrink-0" style="color:#0d9488">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        </div>
-        <div><h4 class="font-bold text-gray-900 text-sm mb-1">Improves Accuracy</h4><p class="text-gray-700 text-xs leading-relaxed">Reduces prescription errors and drug interactions through automated checks and AI-assisted prescribing.</p></div>
-      </div>
-      <div class="why-card" data-aos="fade-up" data-aos-delay="160">
-        <div class="w-11 h-11 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center flex-shrink-0" style="color:#1a56db">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
-        </div>
-        <div><h4 class="font-bold text-gray-900 text-sm mb-1">Enhances Patient Safety &amp; Care Continuity</h4><p class="text-gray-700 text-xs leading-relaxed">Maintains full digital patient records and history for seamless care.</p></div>
-      </div>
-      <div class="why-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="w-11 h-11 bg-teal-50 border border-teal-100 rounded-xl flex items-center justify-center flex-shrink-0" style="color:#0d9488">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.82V15.18a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-        </div>
-        <div><h4 class="font-bold text-gray-900 text-sm mb-1">Supports Telemedicine &amp; Online Consultations</h4><p class="text-gray-700 text-xs leading-relaxed">Making healthcare more accessible for patients anywhere.</p></div>
-      </div>
-      <div class="why-card" data-aos="fade-up" data-aos-delay="80">
-        <div class="w-11 h-11 bg-blue-50 border border-blue-100 rounded-xl flex items-center justify-center flex-shrink-0" style="color:#1a56db">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-        </div>
-        <div><h4 class="font-bold text-gray-900 text-sm mb-1">Offers Data-Driven Insights &amp; Reporting</h4><p class="text-gray-700 text-xs leading-relaxed">Helps clinics make informed decisions, track performance, and improve operations.</p></div>
-      </div>
-      <div class="why-card" data-aos="fade-up" data-aos-delay="160">
-        <div class="w-11 h-11 bg-teal-50 border border-teal-100 rounded-xl flex items-center justify-center flex-shrink-0" style="color:#0d9488">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-        </div>
-        <div><h4 class="font-bold text-gray-900 text-sm mb-1">Customizable to Clinic Workflows</h4><p class="text-gray-700 text-xs leading-relaxed">Adapts to clinic size, needs, and integrates with existing EHR or lab/pharmacy systems.</p></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!--  AI SECTION -->
-<section id="ai" class="py-24 relative overflow-hidden" style="background:linear-gradient(135deg,#1e3a8a 0%,#1a56db 50%,#0ea5e9 100%)">
-  <div class="cta-pattern"></div>
-  <div class="cta-glow w-96 h-96" style="background:rgba(14,165,233,.25);top:-100px;right:-80px"></div>
-  <div class="cta-glow w-64 h-64" style="background:rgba(16,185,129,.2);bottom:-40px;left:-60px"></div>
-
-  <div class="relative max-w-7xl mx-auto px-5 sm:px-6">
-    <div class="text-center mb-16" data-aos="fade-up">
-      <div class="badge-white mx-auto mb-4">Artificial Intelligence</div>
-      <h2 class="text-4xl lg:text-5xl font-black text-white mb-4">AI-Powered Healthcare Intelligence</h2>
-      <p class="text-white/65 text-lg max-w-2xl mx-auto">Leverage artificial intelligence to enhance patient care and streamline operations.</p>
-      <div class="mt-6 h-1 w-24 rounded-full mx-auto" style="background:linear-gradient(90deg,rgba(255,255,255,.4),rgba(255,255,255,.8),rgba(255,255,255,.4))"></div>
-    </div>
-
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="ai-card" data-aos="fade-up" data-aos-delay="0">
-        <div class="ai-card-icon" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)">📋</div>
-        <h3 class="text-white font-bold text-xl mb-3">Prescription Summarization</h3>
-        <p class="text-white/70 leading-relaxed text-sm">AI analyzes past prescriptions to provide treatment insights and patterns for better clinical decisions.</p>
-      </div>
-      <div class="ai-card" data-aos="fade-up" data-aos-delay="80" style="border-color:rgba(16,185,129,.3)">
-        <div class="ai-card-icon" style="background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3)">🔬</div>
-        <h3 class="text-white font-bold text-xl mb-3">Smart Diagnostics</h3>
-        <p class="text-white/70 leading-relaxed text-sm">AI-assisted preliminary diagnosis and treatment recommendations to support clinical judgment.</p>
-      </div>
-      <div class="ai-card" data-aos="fade-up" data-aos-delay="160">
-        <div class="ai-card-icon" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2)">📈</div>
-        <h3 class="text-white font-bold text-xl mb-3">Predictive Analytics</h3>
-        <p class="text-white/70 leading-relaxed text-sm">Forecast patient load and optimize resource allocation with data-driven predictions.</p>
-      </div>
-      <div class="ai-card" data-aos="fade-up" data-aos-delay="240" style="border-color:rgba(14,165,233,.3)">
-        <div class="ai-card-icon" style="background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.3)">🤖</div>
-        <h3 class="text-white font-bold text-xl mb-3">AI Chatbot for Doctors</h3>
-        <p class="text-white/70 leading-relaxed text-sm">Trained on your services and specialties — gives patients smart answers, books appointments, and provides 24/7 support on your website.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!--  TESTIMONIALS -->
-<section id="about" class="py-24" style="background:linear-gradient(180deg,#f8faff 0%,#eff6ff 50%,#f8faff 100%)">
-  <div class="max-w-7xl mx-auto px-5 sm:px-6">
-    <div class="text-center mb-16" data-aos="fade-up">
-      <div class="badge mx-auto mb-4">Reviews</div>
-      <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">Trusted by Healthcare Professionals</h2>
-      <p class="text-gray-500 text-lg">Hear from doctors who've transformed their practice with ePrescribe.</p>
-      <div class="mt-6 h-1 w-24 rounded-full mx-auto" style="background:linear-gradient(90deg,#1a56db,#0ea5e9)"></div>
-    </div>
-
-    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="testi-card" style="border-top-color:#1a56db" data-aos="fade-up" data-aos-delay="0">
-        <div class="text-yellow-400 text-base mb-4">★★★★★</div>
-        <p class="text-gray-600 text-sm leading-relaxed italic mb-6">"Very supportive team. Support over call &amp; WhatsApp is quick, and they visit the clinic in person whenever required."</p>
-        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-100 shadow-md mb-4 flex-shrink-0">
-          <img src="./images/Dr_Shashidhar_Mishra.jpeg" alt="Dr Shashidhar Mishra" class="w-full h-full object-cover"/>
-        </div>
-        <p class="font-bold text-gray-900 text-sm">Dr Shashidhar Mishra</p>
-        <p class="text-xs mt-0.5" style="color:#1a56db">Ayurvedic General Physician</p>
-      </div>
-
-      <div class="testi-card" style="border-top-color:#14b8a6" data-aos="fade-up" data-aos-delay="80">
-        <div class="text-yellow-400 text-base mb-4">★★★★★</div>
-        <p class="text-gray-600 text-sm leading-relaxed italic mb-6">"After switching to ePrescribe, I access complete patient history in one click. Digital prescriptions save valuable consultation time."</p>
-        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-teal-100 shadow-md mb-4 flex-shrink-0">
-          <img src="./images/dr_rahul_yadav.jpg" alt="Dr Rahul Yadav" class="w-full h-full object-cover"/>
-        </div>
-        <p class="font-bold text-gray-900 text-sm">Dr. Rahul Yadav</p>
-        <p class="text-teal-600 text-xs mt-0.5">Family Physician &amp; Surgeon</p>
-      </div>
-
-      <div class="testi-card" style="border-top-color:#2563eb" data-aos="fade-up" data-aos-delay="160">
-        <div class="text-yellow-400 text-base mb-4">★★★★★</div>
-        <p class="text-gray-600 text-sm leading-relaxed italic mb-6">"ePrescribe helps me manage treatment history &amp; digital prescriptions easily. Patients never miss follow-up visits now."</p>
-        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-100 shadow-md mb-4 flex-shrink-0">
-          <img src="./images/dr_rahul_rane.jpg" alt="Dr Rahul Rane" class="w-full h-full object-cover"/>
-        </div>
-        <p class="font-bold text-gray-900 text-sm">Dr. Rahul Rane</p>
-        <p class="text-xs mt-0.5" style="color:#2563eb">Orthopedic Surgeon</p>
-      </div>
-
-      <div class="testi-card" style="border-top-color:#2dd4bf" data-aos="fade-up" data-aos-delay="0">
-        <div class="text-yellow-400 text-base mb-4">★★★★★</div>
-        <p class="text-gray-600 text-sm leading-relaxed italic mb-6">"Patient management became so smooth with ePrescribe. The web app integration is fantastic for both doctors and patients."</p>
-        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-teal-100 shadow-md mb-4 flex-shrink-0">
-          <img src="./images/dr-aditya-manke.jpeg" alt="Dr Aditya Manke" class="w-full h-full object-cover"/>
-        </div>
-        <p class="font-bold text-gray-900 text-sm">Dr. Aditya Manke</p>
-        <p class="text-teal-500 text-xs mt-0.5">Advanced Laparoscopic &amp; Cancer Surgeon</p>
-      </div>
-
-      <div class="testi-card lg:col-start-2" style="border-top-color:#0ea5e9" data-aos="fade-up" data-aos-delay="80">
-        <div class="text-yellow-400 text-base mb-4">★★★★★</div>
-        <p class="text-gray-600 text-sm leading-relaxed italic mb-6">"ePrescribe lets me securely access complete treatment records &amp; manage follow-ups efficiently. Cloud backup gives complete confidence in data safety."</p>
-        <div class="w-24 h-24 rounded-full overflow-hidden border-4 border-blue-100 shadow-md mb-4 flex-shrink-0">
-          <img src="./images/dr_kishore_kumar_roy.jpg" alt="Dr. Kishore Kumar Roy" class="w-full h-full object-cover"/>
-        </div>
-        <p class="font-bold text-gray-900 text-sm">Dr. Kishore Kumar Roy</p>
-        <p class="text-xs mt-0.5" style="color:#0ea5e9">Senior Consultant Surgical Oncologist</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HMS SECTION -->
-<section id="hms" class="py-24" style="background:linear-gradient(180deg,#fff 0%,#f0f7ff 50%,#fff 100%)">
-  <div class="max-w-7xl mx-auto px-5 sm:px-6">
-    <div class="grid lg:grid-cols-2 gap-16 items-start">
-
-      <div data-aos="fade-right">
-        <div class="badge mb-6">For Hospitals</div>
-        <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-6">
-          ePrescribe <span class="gt">HMS</span>
-        </h2>
-        <p class="text-gray-500 text-lg leading-relaxed mb-6">
-          To simplify your hospital management — a powerful, cloud-based system with essential modules including registration, billing, pharmacy, labs, and much more.
-        </p>
-        <div class="h-1 w-20 rounded-full mb-8" style="background:linear-gradient(90deg,#1a56db,#0ea5e9)"></div>
-        <a href="https://wa.me/919702053758?text=I%20want%20to%20know%20more%20about%20ePrescribe%20HMS"
-           target="_blank" rel="noopener noreferrer"
-           class="btn-primary rounded-full inline-flex">
-          Learn About HMS
-          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-      </div>
-
-      <div class="grid sm:grid-cols-2 gap-3" data-aos="fade-left">
-        <div class="module-card">
-          <div class="w-8 h-8 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5" style="color:#1a56db">01</div>
-          <div><p class="font-semibold text-gray-900 text-sm">Patient Registration</p><p class="text-gray-500 text-xs mt-0.5">OPD/IPD registration, appointment scheduling &amp; demographic data management</p></div>
-        </div>
-        <div class="module-card">
-          <div class="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 text-teal-600">02</div>
-          <div><p class="font-semibold text-gray-900 text-sm">Electronic Medical Records</p><p class="text-gray-500 text-xs mt-0.5">Patient history, diagnoses, prescriptions, and clinical notes all in one place</p></div>
-        </div>
-        <div class="module-card">
-          <div class="w-8 h-8 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5" style="color:#1a56db">03</div>
-          <div><p class="font-semibold text-gray-900 text-sm">Lab Management (LIS)</p><p class="text-gray-500 text-xs mt-0.5">Test ordering, sample tracking, result entry &amp; report integration</p></div>
-        </div>
-        <div class="module-card">
-          <div class="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 text-teal-600">04</div>
-          <div><p class="font-semibold text-gray-900 text-sm">Radiology (RIS)</p><p class="text-gray-500 text-xs mt-0.5">Scheduling of scans, reporting, and imaging data linked with patient records</p></div>
-        </div>
-        <div class="module-card">
-          <div class="w-8 h-8 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5" style="color:#1a56db">05</div>
-          <div><p class="font-semibold text-gray-900 text-sm">Pharmacy &amp; Inventory</p><p class="text-gray-500 text-xs mt-0.5">Drug stock, prescription-to-dispensing workflow, and reorder alerts</p></div>
-        </div>
-        <div class="module-card">
-          <div class="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 text-teal-600">06</div>
-          <div><p class="font-semibold text-gray-900 text-sm">OT / Surgery Management</p><p class="text-gray-500 text-xs mt-0.5">Operation theatre scheduling, consumables tracking, and procedure billing</p></div>
-        </div>
-        <div class="module-card">
-          <div class="w-8 h-8 bg-blue-50 border border-blue-100 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5" style="color:#1a56db">07</div>
-          <div><p class="font-semibold text-gray-900 text-sm">Billing &amp; Finance</p><p class="text-gray-500 text-xs mt-0.5">OPD, IPD, lab &amp; pharmacy billing with support for insurance / TPA</p></div>
-        </div>
-        <div class="module-card">
-          <div class="w-8 h-8 bg-teal-50 border border-teal-100 rounded-lg flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 text-teal-600">08</div>
-          <div><p class="font-semibold text-gray-900 text-sm">Management Dashboard</p><p class="text-gray-500 text-xs mt-0.5">MIS reports, bed occupancy, revenue, and resource tracking</p></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section id="faq" class="py-24" style="background:linear-gradient(180deg,#f8faff 0%,#fff 100%)">
-  <div class="max-w-3xl mx-auto px-5 sm:px-8">
-    <div class="text-center mb-16" data-aos="fade-up">
-      <div class="badge mx-auto mb-4">FAQ</div>
-      <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">Frequently Asked Questions</h2>
-      <p class="text-gray-500">Everything you need to know about ePrescribe.</p>
-      <div class="mt-6 h-1 w-20 rounded-full mx-auto" style="background:linear-gradient(90deg,#1a56db,#0ea5e9)"></div>
-    </div>
-
-    <div class="space-y-3" id="faq-list">
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="0">
-        <button class="faq-btn"><span class="font-semibold text-gray-900 text-sm md:text-base">What is the official contact number of ePrescribe?</span><svg class="faq-icon w-5 h-5 ml-4" style="color:#1a56db" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
-        <div class="faq-answer"><div class="px-6 pb-5 text-gray-500 text-sm leading-relaxed">The contact number of ePrescribe is <strong style="color:#1a56db">9702053758</strong>.</div></div>
-      </div>
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="60">
-        <button class="faq-btn"><span class="font-semibold text-gray-900 text-sm md:text-base">What is the official email ID of ePrescribe?</span><svg class="faq-icon w-5 h-5 ml-4" style="color:#1a56db" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
-        <div class="faq-answer"><div class="px-6 pb-5 text-gray-500 text-sm leading-relaxed">The official email ID of ePrescribe is <strong style="color:#1a56db">contact@eprescribe.co.in</strong>.</div></div>
-      </div>
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="120">
-        <button class="faq-btn"><span class="font-semibold text-gray-900 text-sm md:text-base">Can we customize the software for our specific needs?</span><svg class="faq-icon w-5 h-5 ml-4" style="color:#1a56db" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
-        <div class="faq-answer"><div class="px-6 pb-5 text-gray-500 text-sm leading-relaxed">Yes, the software is fully customizable to fit your clinic's workflow — from patient records, billing, and medications to online/offline appointments, reports, and integrations with labs or pharmacies — everything can be tailored to your needs.</div></div>
-      </div>
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="180">
-        <button class="faq-btn"><span class="font-semibold text-gray-900 text-sm md:text-base">How secure is patient data on your platform?</span><svg class="faq-icon w-5 h-5 ml-4" style="color:#1a56db" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
-        <div class="faq-answer"><div class="px-6 pb-5 text-gray-500 text-sm leading-relaxed">Patient data is stored on secure cloud servers with multi-factor authentication and strict access controls to ensure complete data safety.</div></div>
-      </div>
-      <div class="faq-item" data-aos="fade-up" data-aos-delay="240">
-        <button class="faq-btn"><span class="font-semibold text-gray-900 text-sm md:text-base">How does the AI prescription summarization work?</span><svg class="faq-icon w-5 h-5 ml-4" style="color:#1a56db" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button>
-        <div class="faq-answer"><div class="px-6 pb-5 text-gray-500 text-sm leading-relaxed">Our AI analyzes historical prescription data to identify patterns, drug interactions, and treatment effectiveness. It provides insights to help doctors make informed decisions and maintain comprehensive patient health records.</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!--  CTA -->
-<section id="contact" class="cta-bg py-24">
-  <div class="cta-pattern"></div>
-  <div class="cta-glow w-96 h-96" style="background:rgba(255,255,255,.07);top:-80px;right:-60px"></div>
-  <div class="cta-glow w-64 h-64" style="background:rgba(16,185,129,.15);bottom:-40px;left:-40px"></div>
-
-  <div class="relative max-w-4xl mx-auto px-5 sm:px-6 text-center">
-    <div class="badge-white mx-auto mb-6" data-aos="fade-up">Get Started Today</div>
-    <h2 class="text-4xl lg:text-6xl font-black text-white mb-6 leading-tight" data-aos="fade-up" data-aos-delay="80">
-      Ready to Transform<br/>Your Clinic?
-    </h2>
-    <p class="text-white/70 text-xl mb-10 max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="160">
-      Join hundreds of clinics already using ePrescribe to deliver better patient care.
-    </p>
-    <div class="flex flex-wrap justify-center gap-4" data-aos="fade-up" data-aos-delay="240">
-      <a href="https://wa.me/919702053758?text=I%20want%20to%20start%20a%20free%20trial%20for%20ePrescribe"
-         target="_blank" rel="noopener noreferrer"
-         class="inline-flex items-center gap-2 bg-white font-bold px-10 py-4 rounded-2xl text-base shadow-xl hover:-translate-y-1 transition-all duration-300 hover:shadow-2xl" style="color:#1a56db">
-        Start Free Trial
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-      </a>
-      <a href="tel:9702053758"
-         class="btn-glass px-10 py-4 rounded-2xl text-base">
-        <svg class="w-5 h-5" style="color:#a7f3d0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-        Call Us: 9702053758
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer style="background:#0f172a;color:#fff" class="pt-14 pb-8">
-  <div class="max-w-7xl mx-auto px-5 sm:px-6">
-    <div class="footer-grid mb-12">
-
-      <!-- Brand -->
-      <div>
-        <a href="#" class="inline-flex mb-5">
-          <div class="bg-white rounded-full px-4 py-2 shadow-lg">
-            <img src="./images/eprescribeLogo.jpg" alt="ePrescribe" class="h-8 sm:h-9 w-auto object-contain"/>
-          </div>
-        </a>
-        <p class="text-slate-400 text-sm leading-relaxed max-w-xs mb-6">A secure, cloud-based clinic management platform with AI-powered prescriptions, billing, appointments, and digital records — all paperless.</p>
-        <div class="flex items-center gap-2">
-          <a href="https://wa.me/919702053758" target="_blank" class="w-9 h-9 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
-            <svg class="w-4 h-4 text-teal-400" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347"/></svg>
-          </a>
-          <a href="mailto:contact@eprescribe.co.in" class="w-9 h-9 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
-            <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-          </a>
-          <a href="tel:9702053758" class="w-9 h-9 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all" style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12)">
-            <svg class="w-4 h-4 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- Quick Links -->
-      <div>
-        <h4 class="text-teal-400 font-bold text-sm mb-5">Quick Links</h4>
-        <ul class="space-y-3">
-          <li><a href="#"         class="text-slate-400 hover:text-white text-sm transition-colors">Home</a></li>
-          <li><a href="#features" class="text-slate-400 hover:text-white text-sm transition-colors">Services</a></li>
-          <li><a href="#about"    class="text-slate-400 hover:text-white text-sm transition-colors">About Us</a></li>
-          <li><a href="#contact"  class="text-slate-400 hover:text-white text-sm transition-colors">Contact</a></li>
-        </ul>
-      </div>
-
-      <!-- Contact -->
-      <div>
-        <h4 class="text-teal-400 font-bold text-sm mb-5">Contact Us</h4>
-        <ul class="space-y-3">
-          <li><a href="mailto:contact@eprescribe.co.in" class="text-slate-400 hover:text-white text-sm transition-colors">contact@eprescribe.co.in</a></li>
-          <li><a href="tel:919702053758"               class="text-slate-400 hover:text-white text-sm transition-colors">919702053758</a></li>
-          <li><p class="text-slate-500 text-sm leading-relaxed">11/1908, Sunteck MaXXWorld, Tivri, Naigaon East, Mumbai, Maharashtra 401208</p></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3" style="border-color:rgba(255,255,255,.08)">
-      <p class="text-slate-600 text-xs">© 2026 ePrescribe. All rights reserved.</p>
-      <div class="flex items-center gap-2">
-        <span class="w-1.5 h-1.5 rounded-full pulse-green" style="background:#10b981"></span>
-        <span class="text-slate-600 text-xs">All systems operational</span>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- LOGIN MODAL -->
-<div id="login-modal" class="fixed inset-0 z-[999] flex items-center justify-center p-4" style="display:none!important">
-  <div onclick="closeLoginModal()" class="absolute inset-0" style="background:rgba(15,23,42,.75);backdrop-filter:blur(8px)"></div>
-
-  <div class="relative z-10 w-full max-w-sm" style="animation:modalIn .4s cubic-bezier(.34,1.56,.64,1) both">
-    <!-- Panda Character -->
-    <div class="flex justify-center" style="margin-bottom:-6px">
-      <svg width="120" height="105" viewBox="0 0 120 105" fill="none">
-        <!-- Ears -->
-        <circle cx="22" cy="32" r="18" fill="#1a1a2e"/>
-        <circle cx="22" cy="32" r="11" fill="#2d2d44"/>
-        <circle cx="98" cy="32" r="18" fill="#1a1a2e"/>
-        <circle cx="98" cy="32" r="11" fill="#2d2d44"/>
-        <!-- Arms -->
-        <rect x="8" y="72" width="18" height="12" rx="6" fill="#3a3a5c"/>
-        <rect x="94" y="72" width="18" height="12" rx="6" fill="#3a3a5c"/>
-        <!-- Head -->
-        <ellipse cx="60" cy="62" rx="42" ry="40" fill="white"/>
-        <!-- Eye patches -->
-        <ellipse cx="43" cy="56" rx="14" ry="13" fill="#1a1a2e"/>
-        <ellipse cx="77" cy="56" rx="14" ry="13" fill="#1a1a2e"/>
-        <!-- Eyes white -->
-        <ellipse cx="43" cy="55" rx="8" ry="8" fill="white"/>
-        <ellipse cx="77" cy="55" rx="8" ry="8" fill="white"/>
-        <!-- Pupils -->
-        <circle cx="44" cy="55" r="5" fill="#1a1a2e"/>
-        <circle cx="78" cy="55" r="5" fill="#1a1a2e"/>
-        <!-- Eye shine -->
-        <circle cx="46" cy="53" r="2" fill="white"/>
-        <circle cx="80" cy="53" r="2" fill="white"/>
-        <!-- Cheeks -->
-        <ellipse cx="30" cy="70" rx="9" ry="6" fill="#ffb3c6" opacity=".7"/>
-        <ellipse cx="90" cy="70" rx="9" ry="6" fill="#ffb3c6" opacity=".7"/>
-        <!-- Nose -->
-        <ellipse cx="60" cy="68" rx="6" ry="4" fill="#e8e8e8"/>
-        <!-- Smile -->
-        <path d="M53 76 Q60 84 67 76" stroke="#555" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      </svg>
-    </div>
-
-    <!-- Card -->
-    <div class="bg-white rounded-2xl shadow-2xl px-8 pt-6 pb-8 relative" style="border:1px solid #e2e8f0">
-      <button onclick="closeLoginModal()" class="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold leading-none bg-transparent border-none cursor-pointer">&times;</button>
-
-      <div class="mb-5">
-        <label class="block text-gray-800 font-bold text-sm mb-2">Email:</label>
-        <input type="email" placeholder="Email here..."
-          class="w-full border-0 border-b-2 border-gray-200 focus:border-blue-500 outline-none py-2 text-gray-700 text-sm placeholder-gray-300 bg-transparent transition-colors"/>
-      </div>
-      <div class="mb-7 relative">
-        <label class="block text-gray-800 font-bold text-sm mb-2">Password:</label>
-        <input id="pwd-input" type="password" placeholder="Password here..."
-          class="w-full border-0 border-b-2 border-gray-200 focus:border-blue-500 outline-none py-2 text-gray-700 text-sm placeholder-gray-300 bg-transparent pr-8 transition-colors"/>
-        <button type="button" onclick="togglePwd()" class="absolute right-0 bottom-2 text-gray-400 hover:text-gray-600 bg-transparent border-none cursor-pointer">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
-        </button>
-      </div>
-      <button class="w-full font-black uppercase tracking-widest py-4 rounded-full text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg" style="background:#f5c518;color:#1a1a2e;box-shadow:0 4px 20px rgba(245,197,24,.4)">Login</button>
-      <p class="text-center mt-4"><a href="#" class="text-sm font-medium hover:opacity-75 transition-opacity" style="color:#1a56db">Forgot Password</a></p>
-    </div>
-
-    <!-- Feet -->
-    <div class="flex justify-center gap-10" style="margin-top:-4px">
-      <svg width="38" height="22" viewBox="0 0 38 22"><ellipse cx="19" cy="11" rx="16" ry="10" fill="#d1d5db"/><ellipse cx="10" cy="17" rx="5" ry="4" fill="white" opacity=".9"/><ellipse cx="19" cy="19" rx="5" ry="4" fill="white" opacity=".9"/><ellipse cx="28" cy="17" rx="5" ry="4" fill="white" opacity=".9"/></svg>
-      <svg width="38" height="22" viewBox="0 0 38 22"><ellipse cx="19" cy="11" rx="16" ry="10" fill="#d1d5db"/><ellipse cx="10" cy="17" rx="5" ry="4" fill="white" opacity=".9"/><ellipse cx="19" cy="19" rx="5" ry="4" fill="white" opacity=".9"/><ellipse cx="28" cy="17" rx="5" ry="4" fill="white" opacity=".9"/></svg>
-    </div>
-  </div>
-</div>
-
-<!-- Scroll Top -->
-<button id="scrolltop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
-  <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7"/></svg>
-</button>
-
-<!-- AOS JS -->
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-
-<script>
-  // Init AOS
-  AOS.init({
-    once: true,
-    offset: 60,
-    easing: 'ease-out-cubic',
-    duration: 680,
-  });
-
-  // Modal
-  function openLoginModal(){document.getElementById('login-modal').style.display='flex';document.body.style.overflow='hidden'}
-  function closeLoginModal(){document.getElementById('login-modal').style.display='none';document.body.style.overflow=''}
-  function togglePwd(){const i=document.getElementById('pwd-input');i.type=i.type==='password'?'text':'password'}
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLoginModal()});
-
-  // FAQ
-  document.querySelectorAll('.faq-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const item=btn.closest('.faq-item');
-      const ans=item.querySelector('.faq-answer');
-      const icon=btn.querySelector('.faq-icon');
-      const isOpen=ans.classList.contains('open');
-      // close all
-      document.querySelectorAll('.faq-answer').forEach(a=>a.classList.remove('open'));
-      document.querySelectorAll('.faq-icon').forEach(i=>i.classList.remove('open'));
-      document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('faq-open'));
-      // open clicked if it was closed
-      if(!isOpen){
-        ans.classList.add('open');
-        icon.classList.add('open');
-        item.classList.add('faq-open');
+      .pulse-ring {
+        animation: pulse-ring 2.5s ease-in-out infinite;
       }
-    });
-  });
-</script>
+      @keyframes pulse-green {
+        0% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+        }
+        70% {
+          transform: scale(1);
+          box-shadow: 0 0 0 12px rgba(220, 38, 38, 0);
+        }
+        100% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+        }
+      }
+      .pulse-green {
+        animation: pulse-green 2.5s ease-in-out infinite;
+      }
 
-</body>
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-12px);
+        }
+      }
+      .float-anim {
+        animation: float 5s ease-in-out infinite;
+      }
+
+      /* rotating cards with red-white theme */
+      @keyframes cardCycle1 {
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateY(28px) scale(0.95);
+        }
+        5%,
+        28% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        33%,
+        95% {
+          opacity: 0;
+          transform: translateY(-16px) scale(0.95);
+        }
+      }
+      @keyframes cardCycle2 {
+        0%,
+        33% {
+          opacity: 0;
+          transform: translateY(28px) scale(0.95);
+        }
+        38%,
+        61% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        66%,
+        100% {
+          opacity: 0;
+          transform: translateY(-16px) scale(0.95);
+        }
+      }
+      @keyframes cardCycle3 {
+        0%,
+        66% {
+          opacity: 0;
+          transform: translateY(28px) scale(0.95);
+        }
+        71%,
+        94% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        99%,
+        100% {
+          opacity: 0;
+          transform: translateY(-16px) scale(0.95);
+        }
+      }
+      .card-animate-1 {
+        animation: cardCycle1 9s ease-in-out infinite;
+      }
+      .card-animate-2 {
+        animation: cardCycle2 9s ease-in-out infinite;
+      }
+      .card-animate-3 {
+        animation: cardCycle3 9s ease-in-out infinite;
+      }
+
+      @keyframes pulseSlow {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.8;
+          transform: scale(1.1);
+        }
+      }
+      .animate-pulse-slow {
+        animation: pulseSlow 4s ease-in-out infinite;
+      }
+
+      /* ticker red elements */
+      .ticker-wrap {
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+      }
+      .ticker-inner {
+        display: inline-flex;
+        animation: ticker 32s linear infinite;
+      }
+      @keyframes ticker {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+
+      /* feature card - white with red hover */
+      .feature-card {
+        background: #fff;
+        border: 1px solid #f1f1f1;
+        border-radius: 18px;
+        padding: 1.5rem;
+        transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        cursor: default;
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #dc2626, #ef4444, #b91c1c);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .feature-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 48px rgba(220, 38, 38, 0.1);
+        border-color: #fecaca;
+      }
+      .feature-card:hover::before {
+        transform: scaleX(1);
+      }
+      .feature-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+        flex-shrink: 0;
+        background: #fff1f1;
+        color: #dc2626;
+      }
+
+      /* why card red/white */
+      .why-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1.25rem 1.5rem;
+        border-radius: 16px;
+        background: #fff;
+        border: 1px solid #f1f1f1;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .why-card:hover {
+        border-color: #fecaca;
+        box-shadow: 0 8px 28px rgba(220, 38, 38, 0.1);
+        transform: translateY(-3px);
+      }
+
+      /* AI cards with red accents */
+      .ai-card {
+        border-radius: 22px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(220, 38, 38, 0.3);
+        backdrop-filter: blur(10px);
+      }
+      .ai-card:hover {
+        background: rgba(220, 38, 38, 0.15);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      }
+      .ai-card-icon {
+        width: 72px;
+        height: 72px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem;
+        background: rgba(220, 38, 38, 0.2);
+        border: 1px solid rgba(220, 38, 38, 0.4);
+        transition: transform 0.3s;
+      }
+      .ai-card:hover .ai-card-icon {
+        transform: scale(1.1);
+      }
+
+      /* testimonial card */
+      .testi-card {
+        background: #fff;
+        border: 1px solid #f0f0f0;
+        border-top: 3px solid #dc2626;
+        border-radius: 20px;
+        padding: 1.75rem;
+        transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .testi-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 40px rgba(220, 38, 38, 0.1);
+      }
+
+      /* module card */
+      .module-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.875rem;
+        padding: 1rem 1.25rem;
+        border-radius: 12px;
+        background: #fef2f2;
+        border: 1px solid #fee2e2;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .module-card:hover {
+        border-color: #f87171;
+        background: #fff1f1;
+        transform: translateX(4px);
+      }
+
+      /* FAQ */
+      .faq-item {
+        border: 1px solid #f1f1f1;
+        border-radius: 16px;
+        background: #fff;
+        overflow: hidden;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+      }
+      .faq-item:hover,
+      .faq-item.faq-open {
+        border-color: #fecaca;
+        box-shadow: 0 4px 20px rgba(220, 38, 38, 0.08);
+      }
+      .faq-item.faq-open {
+        background: #fffafa;
+      }
+      .faq-btn {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem 1.5rem;
+        text-align: left;
+        background: transparent;
+        cursor: pointer;
+        border: none;
+        outline: none;
+      }
+      .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition:
+          max-height 0.45s cubic-bezier(0.23, 1, 0.32, 1),
+          padding 0.3s;
+      }
+      .faq-answer.open {
+        max-height: 300px;
+      }
+      .faq-icon {
+        transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        flex-shrink: 0;
+        color: #dc2626;
+      }
+      .faq-icon.open {
+        transform: rotate(180deg);
+      }
+
+      /* CTA red gradient */
+      .cta-bg {
+        background: linear-gradient(
+          135deg,
+          #7f1d1d 0%,
+          #dc2626 50%,
+          #ef4444 100%
+        );
+        position: relative;
+        overflow: hidden;
+      }
+      .cta-pattern {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.08) 1px,
+          transparent 1px
+        );
+        background-size: 28px 28px;
+        pointer-events: none;
+      }
+      .cta-glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        pointer-events: none;
+      }
+
+      .section-divider {
+        height: 1px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          #fecaca 30%,
+          #fecaca 70%,
+          transparent
+        );
+      }
+      @media (max-width: 1023px) {
+        .hero-grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
+      @media (max-width: 640px) {
+        .hero-cards-wrap {
+          height: 340px !important;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr !important;
+          gap: 2rem;
+        }
+      }
+
+      .footer-grid {
+        display: grid;
+        gap: 2rem;
+      }
+      @media (min-width: 640px) and (max-width: 1023px) {
+        .footer-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (min-width: 1024px) {
+        .footer-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .trust-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        background: #fff;
+        border: 1px solid #fee2e2;
+        border-radius: 999px;
+        padding: 0.45rem 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: #b91c1c;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+      }
+
+      @keyframes modalIn {
+        from {
+          opacity: 0;
+          transform: scale(0.85) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+      #scrolltop {
+        position: fixed;
+        bottom: 1.75rem;
+        right: 1.75rem;
+        z-index: 100;
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #dc2626, #b91c1c);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 6px 24px rgba(220, 38, 38, 0.4);
+        opacity: 0;
+        transform: translateY(12px);
+        transition: all 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+        pointer-events: none;
+        border: none;
+      }
+      #scrolltop.visible {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
+      }
+      #scrolltop:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 32px rgba(220, 38, 38, 0.55);
+      }
+
+      .section-label {
+        font-size: 0.7rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .glass {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR (unchanged) -->
+    <nav
+      id="navbar"
+      class="fixed top-0 left-0 right-0 z-50 w-full"
+      style="
+        background: rgba(255, 255, 255, 0.97);
+        box-shadow: 0 2px 24px rgba(220, 38, 38, 0.08);
+        border-bottom: 1px solid #fee2e2;
+        backdrop-filter: blur(16px);
+        transition: all 0.3s;
+      "
+    >
+      <div
+        class="max-w-7xl mx-auto px-5 sm:px-8 py-3.5 flex items-center justify-between gap-4"
+      >
+        <a href="#" class="flex items-center flex-shrink-0">
+          <div
+            id="logo-wrap"
+            class="bg-white rounded-full px-4 py-2 shadow-md shadow-red-100/40"
+          >
+            <img
+              src="./images/eprescribeLogo.jpg"
+              alt="ePrescribe"
+              loading="lazy"
+              class="h-8 sm:h-9 w-auto object-contain"
+            />
+          </div>
+        </a>
+        <div class="flex items-center gap-3">
+          <div class="hidden md:flex items-center gap-8 mr-2" id="dlinks">
+            <a href="#" class="nav-link">Home</a>
+            <a href="services.html" class="nav-link">Services</a>
+            <a href="about.html" class="nav-link">About Us</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+          <button
+            id="hamburger"
+            class="md:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 rounded-xl bg-red-50 border border-red-100 hover:bg-red-100 transition-colors flex-shrink-0 cursor-pointer"
+            aria-label="Toggle menu"
+          >
+            <span id="hb1" class="hb-bar"></span>
+            <span id="hb2" class="hb-bar"></span>
+            <span id="hb3" class="hb-bar"></span>
+          </button>
+        </div>
+      </div>
+      <div
+        id="mobile-menu"
+        class="md:hidden overflow-hidden w-full"
+        style="
+          max-height: 0;
+          transition: max-height 0.35s ease;
+          background: #fff;
+          border-top: 1px solid #fee2e2;
+        "
+      >
+        <div class="px-5 py-3 flex flex-col gap-1">
+          <a
+            href="#"
+            onclick="closeMobileMenu()"
+            class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
+            >Home</a
+          >
+          <a
+            href="services.html"
+            onclick="closeMobileMenu()"
+            class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
+            >Services</a
+          >
+          <a
+            href="about.html"
+            onclick="closeMobileMenu()"
+            class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
+            >About Us</a
+          >
+          <a
+            href="#contact"
+            onclick="closeMobileMenu()"
+            class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
+            >Contact</a
+          >
+        </div>
+      </div>
+    </nav>
+    <script>
+      const navbar = document.getElementById("navbar"),
+        mm = document.getElementById("mobile-menu");
+      const hb1 = document.getElementById("hb1"),
+        hb2 = document.getElementById("hb2"),
+        hb3 = document.getElementById("hb3");
+      let menuOpen = false;
+      window.addEventListener("scroll", () => {
+        document
+          .getElementById("scrolltop")
+          .classList.toggle("visible", window.scrollY > 400);
+        if (menuOpen) closeMobileMenu();
+      });
+      document.getElementById("hamburger").addEventListener("click", () => {
+        menuOpen = !menuOpen;
+        mm.style.maxHeight = menuOpen ? "260px" : "0";
+        hb1.style.transform = menuOpen ? "translateY(7px) rotate(45deg)" : "";
+        hb2.style.opacity = menuOpen ? "0" : "1";
+        hb3.style.transform = menuOpen ? "translateY(-7px) rotate(-45deg)" : "";
+      });
+      function closeMobileMenu() {
+        menuOpen = false;
+        mm.style.maxHeight = "0";
+        hb1.style.transform = "";
+        hb2.style.opacity = "1";
+        hb3.style.transform = "";
+      }
+    </script>
+
+    <!-- HERO (white background, red elements) -->
+    <section class="hero-bg relative min-h-screen flex items-center">
+      <div class="hero-mesh"></div>
+      <div class="hero-dots"></div>
+      <div
+        class="blob w-96 h-96"
+        style="top: -100px; right: -80px; background: #fecaca; opacity: 0.45"
+      ></div>
+      <div
+        class="blob w-80 h-80"
+        style="bottom: -60px; left: -80px; background: #fee2e2; opacity: 0.4"
+      ></div>
+      <div class="relative w-full max-w-7xl mx-auto px-5 sm:px-8 pt-28 pb-20">
+        <div
+          class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center hero-grid"
+        >
+          <div class="w-full min-w-0 order-1">
+            <div class="badge mb-6" data-aos="fade-up">
+              <span
+                class="w-2 h-2 rounded-full pulse-ring flex-shrink-0"
+                style="background: #dc2626"
+              ></span>
+              AI-Powered Healthcare Platform
+            </div>
+            <h1
+              class="font-black leading-[1.05] mb-6 text-gray-900"
+              style="font-size: clamp(2.2rem, 5vw, 4.4rem)"
+              data-aos="fade-up"
+              data-aos-delay="80"
+            >
+              Smart Clinic<br /><span class="gt">Management,</span
+              ><br />Reimagined.
+            </h1>
+            <p
+              class="text-gray-500 leading-relaxed mb-8 max-w-lg"
+              style="font-size: clamp(0.95rem, 2vw, 1.1rem)"
+              data-aos="fade-up"
+              data-aos-delay="150"
+            >
+              Built on healthcare compliance and best practices, ePrescribe is a
+              secure, cloud-based, multi-doctor clinic management platform.
+              Manage patient records, digital prescriptions, billing, and
+              appointments — all in one paperless, mobile-friendly solution.
+            </p>
+            <div
+              class="grid grid-cols-2 sm:flex sm:flex-wrap gap-3 mb-5"
+              data-aos="fade-up"
+              data-aos-delay="220"
+            >
+               <a
+                href="patients.html"
+                class="flex items-center justify-center gap-2 text-white font-bold rounded-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                style="background:#dc2626;box-shadow:0 4px 20px rgba(220,38,38,.3);padding:.9rem 1rem;font-size:.9rem"
+              >
+                <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-user text-white text-xs"></i>
+                </span>
+                For Patients
+              </a>
+              <a
+                href="doctors.html"
+                class="flex items-center justify-center gap-2 text-white font-bold rounded-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                style="background:#dc2626;box-shadow:0 4px 20px rgba(220,38,38,.3);padding:.9rem 1rem;font-size:.9rem"
+              >
+                <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0">
+                  <i class="fas fa-user-doctor text-white text-xs"></i>
+                </span>
+                For Doctors
+              </a>
+            </div>
+            <p
+              class="text-gray-400 text-sm mb-8"
+              data-aos="fade-up"
+              data-aos-delay="280"
+            >
+              Existing client?
+              <button
+                onclick="openLoginModal()"
+                class="font-semibold underline underline-offset-2 hover:opacity-80 transition-opacity bg-transparent border-none cursor-pointer"
+                style="color: #dc2626"
+              >
+                Login here →
+              </button>
+            </p>
+            <div
+              class="flex flex-wrap gap-2"
+              data-aos="fade-up"
+              data-aos-delay="340"
+            >
+              <span class="trust-pill"
+                ><span style="color: #dc2626">✓</span> HIPAA Compliant</span
+              ><span class="trust-pill"
+                ><span style="color: #dc2626">✓</span> 500+ Clinics</span
+              ><span class="trust-pill"
+                ><span style="color: #dc2626">✓</span> AI-Powered</span
+              ><span class="trust-pill"
+                ><span style="color: #dc2626">✓</span> 99.9% Uptime</span
+              >
+            </div>
+            <div
+              class="flex flex-wrap gap-6 mt-8 pt-8 border-t border-gray-100"
+              data-aos="fade-up"
+              data-aos-delay="400"
+            >
+              <div>
+                <p class="text-2xl font-black text-red-600">500+</p>
+                <p class="text-xs text-gray-400 font-medium">
+                  Clinics Onboarded
+                </p>
+              </div>
+              <div class="w-px bg-gray-100"></div>
+              <div>
+                <p class="text-2xl font-black text-red-500">1M+</p>
+                <p class="text-xs text-gray-400 font-medium">
+                  Prescriptions Generated
+                </p>
+              </div>
+              <div class="w-px bg-gray-100"></div>
+              <div>
+                <p class="text-2xl font-black text-red-600">99.9%</p>
+                <p class="text-xs text-gray-400 font-medium">Uptime SLA</p>
+              </div>
+              <div class="w-px bg-gray-100"></div>
+              <div>
+                <p class="text-2xl font-black text-red-600">24/7</p>
+                <p class="text-xs text-gray-400 font-medium">
+                  Support Available
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex justify-center lg:justify-end mt-8 lg:mt-0 w-full min-w-0 order-2"
+          >
+            <div
+              class="hero-cards-wrap relative flex justify-center items-start w-full float-anim"
+              style="height: 380px; max-width: min(420px, 100%)"
+            >
+              <div class="card-animate-1 absolute w-full">
+                <div
+                  class="bg-white rounded-3xl p-7 shadow-2xl border border-red-100"
+                  style="
+                    background: linear-gradient(135deg, #fff 60%, #fff5f5 100%);
+                  "
+                >
+                  <div
+                    class="absolute bottom-0 right-0 w-32 h-32 rounded-full"
+                    style="
+                      background: radial-gradient(
+                        circle,
+                        rgba(220, 38, 38, 0.12) 0%,
+                        transparent 70%
+                      );
+                    "
+                  ></div>
+                  <div
+                    class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+                    style="
+                      background: linear-gradient(135deg, #dc2626, #ef4444);
+                    "
+                  >
+                    <i class="fas fa-user-plus text-white text-xl"></i>
+                  </div>
+                  <h3 class="font-black text-gray-900 text-xl mb-3">
+                    Patient Registration
+                  </h3>
+                  <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    Seamless digital onboarding with automated data capture and
+                    verification for quick patient onboarding.
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="w-2.5 h-2.5 rounded-full"
+                      style="background: #dc2626"
+                    ></span
+                    ><span class="text-sm font-semibold text-red-600"
+                      >Active feature</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="card-animate-2 absolute w-full">
+                <div
+                  class="bg-white rounded-3xl p-7 shadow-2xl border border-red-100"
+                  style="
+                    background: linear-gradient(135deg, #fff 60%, #fff5f5 100%);
+                  "
+                >
+                  <div
+                    class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+                    style="
+                      background: linear-gradient(135deg, #ef4444, #b91c1c);
+                    "
+                  >
+                    <i class="fas fa-chart-line text-white text-xl"></i>
+                  </div>
+                  <h3 class="font-black text-gray-900 text-xl mb-3">
+                    Live Analytics
+                  </h3>
+                  <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    Real-time clinic reports, performance metrics, and
+                    comprehensive KPIs in one intuitive dashboard.
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="w-2.5 h-2.5 rounded-full"
+                      style="background: #dc2626"
+                    ></span
+                    ><span class="text-sm font-semibold text-red-600"
+                      >Real-time data</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="card-animate-3 absolute w-full">
+                <div
+                  class="bg-white rounded-3xl p-7 shadow-2xl border border-red-100"
+                  style="
+                    background: linear-gradient(135deg, #fff 60%, #fff5f5 100%);
+                  "
+                >
+                  <div
+                    class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5"
+                    style="
+                      background: linear-gradient(135deg, #b91c1c, #ef4444);
+                    "
+                  >
+                    <i
+                      class="fas fa-prescription-bottle-medical text-white text-xl"
+                    ></i>
+                  </div>
+                  <h3 class="font-black text-gray-900 text-xl mb-3">
+                    Smart Prescriptions
+                  </h3>
+                  <p class="text-gray-500 text-sm leading-relaxed mb-5">
+                    AI-powered prescription generation with automatic dosage
+                    checks and drug interaction alerts.
+                  </p>
+                  <div class="flex items-center gap-2">
+                    <span
+                      class="w-2.5 h-2.5 rounded-full"
+                      style="background: #dc2626"
+                    ></span
+                    ><span class="text-sm font-semibold text-red-600"
+                      >AI-powered</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="absolute bottom-0 left-0 right-0 pointer-events-none">
+        <svg
+          viewBox="0 0 1440 70"
+          fill="none"
+          preserveAspectRatio="none"
+          style="width: 100%"
+        >
+          <path
+            d="M0 70L60 60C120 50 240 32 360 27C480 22 600 30 720 34C840 38 960 38 1080 34C1200 30 1320 22 1380 18L1440 14V70H0Z"
+            fill="white"
+          />
+        </svg>
+      </div>
+    </section>
+
+    <!-- TRUST TICKER (red/white) -->
+    <section
+      class="py-4 border-b border-gray-100"
+      style="background: linear-gradient(90deg, #fff5f5, #ffffff, #fff5f5)"
+    >
+      <div class="ticker-wrap">
+        <div class="ticker-inner">
+          <span
+            class="inline-flex items-center gap-2 mx-8 text-gray-500 text-sm font-medium"
+            ><span style="color: #dc2626">✓</span> HIPAA Compliant</span
+          ><span
+            class="inline-flex items-center gap-2 mx-8 text-gray-500 text-sm font-medium"
+            ><span style="color: #dc2626">✓</span> Cloud-Based Platform</span
+          ><span
+            class="inline-flex items-center gap-2 mx-8 text-gray-500 text-sm font-medium"
+            ><span style="color: #dc2626">✓</span> AI-Powered
+            Prescriptions</span
+          ><span
+            class="inline-flex items-center gap-2 mx-8 text-gray-500 text-sm font-medium"
+            ><span style="color: #dc2626">✓</span> Multi-Doctor Support</span
+          ><span
+            class="inline-flex items-center gap-2 mx-8 text-gray-500 text-sm font-medium"
+            ><span style="color: #dc2626">✓</span> Mobile Friendly</span
+          ><span
+            class="inline-flex items-center gap-2 mx-8 text-gray-500 text-sm font-medium"
+            ><span style="color: #dc2626">✓</span> 24/7 Support</span
+          ><span
+            class="inline-flex items-center gap-2 mx-8 text-gray-500 text-sm font-medium"
+            ><span style="color: #dc2626">✓</span> SSL Encrypted</span
+          ><span
+            class="inline-flex items-center gap-2 mx-8 text-gray-500 text-sm font-medium"
+            ><span style="color: #dc2626">✓</span> Paperless Workflow</span
+          ><!-- duplicate loop for seamless -->
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES (red border hover) -->
+    <section
+      id="features"
+      class="py-24"
+      style="
+        background: linear-gradient(180deg, #fff 0%, #fef2f2 40%, #fff 100%);
+      "
+    >
+      <div class="max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="text-center mb-16" data-aos="fade-up">
+          <div class="badge mx-auto mb-4">Complete Suite</div>
+          <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+            Complete Clinic <span class="gt">Management Suite</span>
+          </h2>
+          <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+            Everything your clinic needs, in one powerful platform — from
+            patient registration to AI-powered prescriptions.
+          </p>
+          <div
+            class="mt-6 h-1 w-24 rounded-full mx-auto"
+            style="
+              background: linear-gradient(90deg, #dc2626, #ef4444, #b91c1c);
+            "
+          ></div>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch">
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="feature-icon"><span class="text-2xl">👤</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Patient Registration
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Seamless digital onboarding with automated data capture and
+              verification.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="50">
+            <div class="feature-icon"><span class="text-2xl">📅</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Appointment Management
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Smart scheduling with reminders, follow-ups, and slot availability
+              tracking.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="feature-icon"><span class="text-2xl">✍️</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              AI-Powered Prescriptions
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Create accurate digital prescriptions with automatic dosage checks
+              and drug interaction alerts.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="150">
+            <div class="feature-icon"><span class="text-2xl">📁</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Electronic Health Records
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Maintain comprehensive patient histories, lab results, and medical
+              documents in one secure location.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="feature-icon"><span class="text-2xl">📸</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Store Photos &amp; Videos
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Attach clinical photos or videos directly to patient records for
+              future reference.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="250">
+            <div class="feature-icon"><span class="text-2xl">💳</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Billing &amp; Payments
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Generate invoices, process online payments, and track outstanding
+              balances effortlessly.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="feature-icon"><span class="text-2xl">💬</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Online Consultations
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Offer secure video or chat consultations, share prescriptions
+              instantly, and manage telehealth sessions.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="350">
+            <div class="feature-icon"><span class="text-2xl">☁️</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Secure Cloud Storage
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Bank-level SSL encryption ensures patient data remains private and
+              protected.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="feature-icon"><span class="text-2xl">🔔</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Notifications &amp; Reminders
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Automated alerts for appointments, follow-ups, and prescription
+              renewals.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="450">
+            <div class="feature-icon"><span class="text-2xl">⚡</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">24/7 Support</h3>
+            <p class="text-gray-600 text-xs">
+              Instant technical assistance via chat, WhatsApp, or Google Meet —
+              anytime you need it.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
+            <div class="feature-icon"><span class="text-2xl">🛡️</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              HIPAA Compliant
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Ensure patient data privacy and security with strict HIPAA
+              standards.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="550">
+            <div class="feature-icon"><span class="text-2xl">📊</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Admin Dashboard &amp; Analytics
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Manage staff, monitor operations, and track clinic performance
+              with visual analytics.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="600">
+            <div class="feature-icon"><span class="text-2xl">🩺</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Treatment &amp; Procedures
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Manage multi-visit treatments, fixed-cost procedures, and
+              long-term care plans efficiently.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="650">
+            <div class="feature-icon"><span class="text-2xl">🧠</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">CRM</h3>
+            <p class="text-gray-600 text-xs">
+              Centralized patient relationship management with visit history,
+              follow-ups, and communication tracking.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="700">
+            <div class="feature-icon"><span class="text-2xl">🏠</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Home Visit Management
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Manage home visit appointments with patient details, visit
+              tracking, and doctor availability.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="750">
+            <div class="feature-icon"><span class="text-2xl">📦</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Inventory Management
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Track medicines, consumables, and stock levels with alerts for low
+              inventory and expiry.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="800">
+            <div class="feature-icon"><span class="text-2xl">📋</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Smart Attendance
+            </h3>
+            <p class="text-gray-600 text-xs">
+              RFID/NFC-based contactless staff attendance — tap, track, and
+              auto-calculate working hours, overtime, and salary.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="850">
+            <div class="feature-icon"><span class="text-2xl">💳</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              Smart Patient Card Tap System
+            </h3>
+            <p class="text-gray-600 text-xs">
+              RFID/NFC tap → Patient history instantly open. One tap gives
+              instant access to complete patient records.
+            </p>
+          </div>
+          <div class="feature-card" data-aos="fade-up" data-aos-delay="900">
+            <div class="feature-icon"><span class="text-2xl">📡</span></div>
+            <h3 class="font-bold text-gray-900 mb-2 text-sm">
+              RFID Attendance Device
+            </h3>
+            <p class="text-gray-600 text-xs">
+              Smart RFID device for hospitals &amp; clinics — automates staff
+              attendance, tracks in/out time in real-time.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY EPRESCRIBE red/white -->
+    <section class="py-20 border-t border-red-100 bg-white">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="text-center mb-14">
+          <div class="badge-teal mx-auto mb-4">Why ePrescribe?</div>
+          <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mb-3">
+            Built to Make Clinics Better
+          </h2>
+          <p class="text-gray-500 max-w-xl mx-auto">
+            Designed by healthcare professionals, for healthcare professionals.
+          </p>
+          <div
+            class="mt-5 h-1 w-20 rounded-full mx-auto"
+            style="background: linear-gradient(90deg, #dc2626, #ef4444)"
+          ></div>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="why-card" data-aos="fade-up" data-aos-delay="0">
+            <div
+              class="w-11 h-11 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center flex-shrink-0 text-red-600"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-900 text-sm mb-1">
+                Reduces Administrative Burden
+              </h4>
+              <p class="text-gray-600 text-xs">
+                Saves time on manual tasks so staff &amp; doctors can focus more
+                on patient care.
+              </p>
+            </div>
+          </div>
+          <div class="why-card" data-aos="fade-up" data-aos-delay="100">
+            <div
+              class="w-11 h-11 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center flex-shrink-0 text-red-600"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-900 text-sm mb-1">
+                Improves Accuracy
+              </h4>
+              <p class="text-gray-600 text-xs">
+                Reduces prescription errors and drug interactions through
+                automated checks.
+              </p>
+            </div>
+          </div>
+          <div class="why-card" data-aos="fade-up" data-aos-delay="200">
+            <div
+              class="w-11 h-11 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center flex-shrink-0 text-red-600"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-900 text-sm mb-1">
+                Enhances Patient Safety
+              </h4>
+              <p class="text-gray-600 text-xs">
+                Maintains full digital patient records and history for seamless
+                care.
+              </p>
+            </div>
+          </div>
+          <div class="why-card" data-aos="fade-up" data-aos-delay="300">
+            <div
+              class="w-11 h-11 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center flex-shrink-0 text-red-600"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 10l4.553-2.069A1 1 0 0121 8.82V15.18a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-900 text-sm mb-1">
+                Supports Telemedicine
+              </h4>
+              <p class="text-gray-600 text-xs">
+                Making healthcare more accessible for patients anywhere.
+              </p>
+            </div>
+          </div>
+          <div class="why-card" data-aos="fade-up" data-aos-delay="400">
+            <div
+              class="w-11 h-11 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center flex-shrink-0 text-red-600"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-900 text-sm mb-1">
+                Data-Driven Insights
+              </h4>
+              <p class="text-gray-600 text-xs">
+                Helps clinics make informed decisions, track performance, and
+                improve operations.
+              </p>
+            </div>
+          </div>
+          <div class="why-card" data-aos="fade-up" data-aos-delay="500">
+            <div
+              class="w-11 h-11 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center flex-shrink-0 text-red-600"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+                />
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-bold text-gray-900 text-sm mb-1">
+                Customizable Workflows
+              </h4>
+              <p class="text-gray-600 text-xs">
+                Adapts to clinic size, needs, and integrates with existing EHR
+                or lab/pharmacy systems.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI SECTION (red themed) -->
+    <section
+      id="ai"
+      class="py-24 relative overflow-hidden"
+      style="
+        background: linear-gradient(
+          135deg,
+          #7f1d1d 0%,
+          #dc2626 50%,
+          #ef4444 100%
+        );
+      "
+    >
+      <div class="cta-pattern"></div>
+      <div class="relative max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="text-center mb-16">
+          <div class="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest px-4 py-1.5 rounded-full mb-4" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.5);color:#fff;letter-spacing:.1em">Artificial Intelligence</div>
+          <h2 class="text-4xl lg:text-5xl font-black text-white mb-4">
+            AI-Powered Healthcare Intelligence
+          </h2>
+          <p class="text-white/80 text-lg max-w-2xl mx-auto">
+            Leverage artificial intelligence to enhance patient care and
+            streamline operations.
+          </p>
+          <div
+            class="mt-6 h-1 w-24 rounded-full mx-auto"
+            style="
+              background: linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.4),
+                rgba(255, 255, 255, 0.8)
+              );
+            "
+          ></div>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div class="ai-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="ai-card-icon">📋</div>
+            <h3 class="text-white font-bold text-xl mb-3">
+              Prescription Summarization
+            </h3>
+            <p class="text-white/80 text-sm">
+              AI analyzes past prescriptions to provide treatment insights and
+              patterns.
+            </p>
+          </div>
+          <div class="ai-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="ai-card-icon">🔬</div>
+            <h3 class="text-white font-bold text-xl mb-3">Smart Diagnostics</h3>
+            <p class="text-white/80 text-sm">
+              AI-assisted preliminary diagnosis and treatment recommendations.
+            </p>
+          </div>
+          <div class="ai-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="ai-card-icon">📈</div>
+            <h3 class="text-white font-bold text-xl mb-3">
+              Predictive Analytics
+            </h3>
+            <p class="text-white/80 text-sm">
+              Forecast patient load and optimize resource allocation.
+            </p>
+          </div>
+          <div class="ai-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="ai-card-icon">🤖</div>
+            <h3 class="text-white font-bold text-xl mb-3">
+              AI Chatbot for Doctors
+            </h3>
+            <p class="text-white/80 text-sm">
+              Trained on your services — gives patients smart answers, books
+              appointments.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS (red border top) -->
+    <section id="about" class="py-24 bg-white">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="text-center mb-16">
+          <div class="badge mx-auto mb-4">Reviews</div>
+          <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+            Trusted by Healthcare Professionals
+          </h2>
+          <p class="text-gray-500 text-lg">
+            Hear from doctors who've transformed their practice with ePrescribe.
+          </p>
+          <div
+            class="mt-6 h-1 w-24 rounded-full mx-auto"
+            style="background: linear-gradient(90deg, #dc2626, #ef4444)"
+          ></div>
+        </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="testi-card" data-aos="fade-up" data-aos-delay="0">
+            <div class="text-red-500 text-base mb-4">★★★★★</div>
+            <p class="text-gray-600 text-sm italic mb-6">
+              "Very supportive team. Support over call & WhatsApp is quick, and
+              they visit the clinic in person whenever required."
+            </p>
+            <div
+              class="w-24 h-24 rounded-full overflow-hidden border-4 border-red-100 shadow-md mb-4"
+            >
+              <img
+                src="./images/Dr_Shashidhar_Mishra.jpeg"
+                alt="Dr Shashidhar Mishra"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="font-bold text-gray-900 text-sm">Dr Shashidhar Mishra</p>
+            <p class="text-xs text-red-600">Ayurvedic General Physician</p>
+          </div>
+          <div class="testi-card" data-aos="fade-up" data-aos-delay="100">
+            <div class="text-red-500 text-base mb-4">★★★★★</div>
+            <p class="text-gray-600 text-sm italic mb-6">
+              "After switching to ePrescribe, I access complete patient history
+              in one click. Digital prescriptions save valuable consultation
+              time."
+            </p>
+            <div
+              class="w-24 h-24 rounded-full overflow-hidden border-4 border-red-100 shadow-md mb-4"
+            >
+              <img
+                src="./images/dr_rahul_yadav.jpg"
+                alt="Dr Rahul Yadav"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="font-bold text-gray-900 text-sm">Dr. Rahul Yadav</p>
+            <p class="text-red-600 text-xs">Family Physician & Surgeon</p>
+          </div>
+          <div class="testi-card" data-aos="fade-up" data-aos-delay="200">
+            <div class="text-red-500 text-base mb-4">★★★★★</div>
+            <p class="text-gray-600 text-sm italic mb-6">
+              "ePrescribe helps me manage treatment history & digital
+              prescriptions easily. Patients never miss follow-up visits now."
+            </p>
+            <div
+              class="w-24 h-24 rounded-full overflow-hidden border-4 border-red-100 shadow-md mb-4"
+            >
+              <img
+                src="./images/dr_rahul_rane.jpg"
+                alt="Dr Rahul Rane"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="font-bold text-gray-900 text-sm">Dr. Rahul Rane</p>
+            <p class="text-red-600 text-xs">Orthopedic Surgeon</p>
+          </div>
+          <div class="testi-card" data-aos="fade-up" data-aos-delay="300">
+            <div class="text-red-500 text-base mb-4">★★★★★</div>
+            <p class="text-gray-600 text-sm italic mb-6">
+              "Patient management became so smooth with ePrescribe. The web app
+              integration is fantastic for both doctors and patients."
+            </p>
+            <div
+              class="w-24 h-24 rounded-full overflow-hidden border-4 border-red-100 shadow-md mb-4"
+            >
+              <img
+                src="./images/dr-aditya-manke.jpeg"
+                alt="Dr Aditya Manke"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="font-bold text-gray-900 text-sm">Dr. Aditya Manke</p>
+            <p class="text-red-600 text-xs">
+              Advanced Laparoscopic & Cancer Surgeon
+            </p>
+          </div>
+          <div class="testi-card" data-aos="fade-up" data-aos-delay="400">
+            <div class="text-red-500 text-base mb-4">★★★★★</div>
+            <p class="text-gray-600 text-sm italic mb-6">
+              "ePrescribe lets me securely access complete treatment records &
+              manage follow-ups efficiently. Cloud backup gives complete
+              confidence."
+            </p>
+            <div
+              class="w-24 h-24 rounded-full overflow-hidden border-4 border-red-100 shadow-md mb-4"
+            >
+              <img
+                src="./images/dr_kishore_kumar_roy.jpg"
+                alt="Dr. Kishore Kumar Roy"
+                class="w-full h-full object-cover"
+              />
+            </div>
+            <p class="font-bold text-gray-900 text-sm">Dr. Kishore Kumar Roy</p>
+            <p class="text-red-600 text-xs">
+              Senior Consultant Surgical Oncologist
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HMS (red accents) -->
+    <section id="hms" class="py-24 bg-gradient-to-b from-white to-red-50">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="grid lg:grid-cols-2 gap-16 items-start">
+          <div>
+            <div class="badge mb-6">For Hospitals</div>
+            <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-6">
+              ePrescribe <span class="gt">HMS</span>
+            </h2>
+            <p class="text-gray-500 text-lg leading-relaxed mb-6">
+              To simplify your hospital management — a powerful, cloud-based
+              system with essential modules including registration, billing,
+              pharmacy, labs, and much more.
+            </p>
+            <div class="h-1 w-20 rounded-full mb-8 bg-red-600"></div>
+            <a
+              href="https://wa.me/919702053758?text=I%20want%20to%20know%20more%20about%20ePrescribe%20HMS"
+              target="_blank"
+              class="btn-primary rounded-full inline-flex"
+              >Learn About HMS
+              <svg
+                class="w-4 h-4 ml-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                /></svg>
+              </a>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-3">
+            <div class="module-card" data-aos="fade-left" data-aos-delay="0">
+              <div
+                class="w-8 h-8 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center text-xs font-bold text-red-700"
+              >
+                01
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">
+                  Patient Registration
+                </p>
+                <p class="text-gray-500 text-xs mt-0.5">
+                  OPD/IPD registration, appointment scheduling & demographic
+                  data management
+                </p>
+              </div>
+            </div>
+            <div class="module-card" data-aos="fade-left" data-aos-delay="50">
+              <div
+                class="w-8 h-8 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center text-xs font-bold text-red-700"
+              >
+                02
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">
+                  Electronic Medical Records
+                </p>
+                <p class="text-gray-500 text-xs mt-0.5">
+                  Patient history, diagnoses, prescriptions, and clinical notes
+                </p>
+              </div>
+            </div>
+            <div class="module-card" data-aos="fade-left" data-aos-delay="100">
+              <div
+                class="w-8 h-8 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center text-xs font-bold text-red-700"
+              >
+                03
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">
+                  Lab Management (LIS)
+                </p>
+                <p class="text-gray-500 text-xs mt-0.5">
+                  Test ordering, sample tracking, result entry
+                </p>
+              </div>
+            </div>
+            <div class="module-card" data-aos="fade-left" data-aos-delay="150">
+              <div
+                class="w-8 h-8 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center text-xs font-bold text-red-700"
+              >
+                04
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">
+                  Radiology (RIS)
+                </p>
+                <p class="text-gray-500 text-xs mt-0.5">
+                  Scheduling of scans, reporting, and imaging data
+                </p>
+              </div>
+            </div>
+            <div class="module-card" data-aos="fade-left" data-aos-delay="200">
+              <div
+                class="w-8 h-8 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center text-xs font-bold text-red-700"
+              >
+                05
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">
+                  Pharmacy & Inventory
+                </p>
+                <p class="text-gray-500 text-xs mt-0.5">
+                  Drug stock, prescription-to-dispensing workflow
+                </p>
+              </div>
+            </div>
+            <div class="module-card" data-aos="fade-left" data-aos-delay="250">
+              <div
+                class="w-8 h-8 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center text-xs font-bold text-red-700"
+              >
+                06
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">
+                  OT / Surgery Management
+                </p>
+                <p class="text-gray-500 text-xs mt-0.5">
+                  Operation theatre scheduling, consumables tracking
+                </p>
+              </div>
+            </div>
+            <div class="module-card" data-aos="fade-left" data-aos-delay="300">
+              <div
+                class="w-8 h-8 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center text-xs font-bold text-red-700"
+              >
+                07
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">
+                  Billing & Finance
+                </p>
+                <p class="text-gray-500 text-xs mt-0.5">
+                  OPD, IPD, lab & pharmacy billing with insurance support
+                </p>
+              </div>
+            </div>
+            <div class="module-card" data-aos="fade-left" data-aos-delay="350">
+              <div
+                class="w-8 h-8 bg-red-100 border border-red-200 rounded-lg flex items-center justify-center text-xs font-bold text-red-700"
+              >
+                08
+              </div>
+              <div>
+                <p class="font-semibold text-gray-900 text-sm">
+                  Management Dashboard
+                </p>
+                <p class="text-gray-500 text-xs mt-0.5">
+                  MIS reports, bed occupancy, revenue, and resource tracking
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ (red border) -->
+    <section id="faq" class="py-24 bg-white">
+      <div class="max-w-3xl mx-auto px-5 sm:px-8">
+        <div class="text-center mb-16">
+          <div class="badge mx-auto mb-4">FAQ</div>
+          <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
+            Frequently Asked Questions
+          </h2>
+          <p class="text-gray-500">
+            Everything you need to know about ePrescribe.
+          </p>
+          <div class="mt-6 h-1 w-20 rounded-full mx-auto bg-red-500"></div>
+        </div>
+        <div class="space-y-3" id="faq-list">
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="0">
+            <button class="faq-btn">
+              <span class="font-semibold text-gray-900 text-sm md:text-base"
+                >What is the official contact number of ePrescribe?</span
+              ><svg
+                class="faq-icon w-5 h-5 ml-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <div class="px-6 pb-5 text-gray-600 text-sm">
+                The contact number of ePrescribe is
+                <strong class="text-red-600">9702053758</strong>.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+            <button class="faq-btn">
+              <span class="font-semibold text-gray-900 text-sm md:text-base"
+                >What is the official email ID of ePrescribe?</span
+              ><svg
+                class="faq-icon w-5 h-5 ml-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <div class="px-6 pb-5 text-gray-600 text-sm">
+                The official email ID of ePrescribe is
+                <strong class="text-red-600">contact@eprescribe.co.in</strong>.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+            <button class="faq-btn">
+              <span class="font-semibold text-gray-900 text-sm md:text-base"
+                >Can we customize the software for our specific needs?</span
+              ><svg
+                class="faq-icon w-5 h-5 ml-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <div class="px-6 pb-5 text-gray-600 text-sm">
+                Yes, the software is fully customizable to fit your clinic's
+                workflow — from patient records, billing, and medications to
+                online/offline appointments, reports, and integrations with labs
+                or pharmacies — everything can be tailored to your needs.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+            <button class="faq-btn">
+              <span class="font-semibold text-gray-900 text-sm md:text-base"
+                >How secure is patient data on your platform?</span
+              ><svg
+                class="faq-icon w-5 h-5 ml-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <div class="px-6 pb-5 text-gray-600 text-sm">
+                Patient data is stored on secure cloud servers with multi-factor
+                authentication and strict access controls to ensure complete
+                data safety.
+              </div>
+            </div>
+          </div>
+          <div class="faq-item" data-aos="fade-up" data-aos-delay="400">
+            <button class="faq-btn">
+              <span class="font-semibold text-gray-900 text-sm md:text-base"
+                >How does the AI prescription summarization work?</span
+              ><svg
+                class="faq-icon w-5 h-5 ml-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 9l-7 7-7-7"
+                />
+              </svg>
+            </button>
+            <div class="faq-answer">
+              <div class="px-6 pb-5 text-gray-600 text-sm">
+                Our AI analyzes historical prescription data to identify
+                patterns, drug interactions, and treatment effectiveness. It
+                provides insights to help doctors make informed decisions and
+                maintain comprehensive patient health records.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA red gradient -->
+    <section id="contact" class="cta-bg py-24">
+      <div class="relative max-w-4xl mx-auto px-5 sm:px-6 text-center"  >
+       
+        <h2 
+          class="text-4xl lg:text-6xl font-black text-white mb-6 leading-tight"
+        >
+          Ready to Transform<br />Your Clinic?
+        </h2>
+        <p class="text-white/80 text-xl mb-10 max-w-2xl mx-auto">
+          Join hundreds of clinics already using ePrescribe to deliver better
+          patient care.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a
+            href="https://wa.me/919702053758?text=I%20want%20to%20start%20a%20free%20trial%20for%20ePrescribe"
+            target="_blank"
+            class="inline-flex items-center gap-2 bg-white font-bold px-10 py-4 rounded-2xl text-base shadow-xl hover:-translate-y-1 transition-all duration-300"
+            style="color:#dc2626"
+            >Start Free Trial
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              /></svg></a
+          ><a
+            href="tel:9702053758"
+            class="inline-flex items-center gap-2 bg-white font-bold px-10 py-4 rounded-2xl text-base shadow-xl hover:-translate-y-1 transition-all duration-300"
+            style="color:#dc2626"
+            ><i class="fas fa-phone"></i> Connect Now</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER (dark with red accents) -->
+    <footer style="background: #0f172a; color: #fff" class="pt-14 pb-8">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="footer-grid mb-12">
+          <div  >
+            <a href="#" class="inline-flex mb-5"
+              ><div class="bg-white rounded-full px-4 py-2 shadow-lg">
+                <img
+                  src="./images/eprescribeLogo.jpg"
+                  alt="ePrescribe"
+                  class="h-8 sm:h-9 w-auto"
+                /></div
+            ></a>
+            <p class="text-slate-300 text-sm max-w-xs mb-6">
+              A secure, cloud-based clinic management platform with AI-powered
+              prescriptions, billing, appointments, and digital records — all
+              paperless.
+            </p>
+            <div class="flex gap-3">
+              <a href="https://wa.me/919702053758" target="_blank" rel="noopener noreferrer"
+                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
+                style="background:#dc2626">
+                <i class="fab fa-whatsapp text-white text-lg"></i>
+              </a>
+              <a href="mailto:contact@eprescribe.co.in"
+                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
+                style="background:#dc2626">
+                <i class="fas fa-envelope text-white text-sm"></i>
+              </a>
+              <a href="tel:9702053758"
+                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
+                style="background:#dc2626">
+                <i class="fas fa-phone text-white text-sm"></i>
+              </a>
+            </div>
+          </div>
+          <div >
+            <h4 class="text-red-400 font-bold text-sm mb-5">Quick Links</h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="#"
+                  class="text-slate-300 hover:text-white text-sm transition-colors"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="services.html"
+                  class="text-slate-300 hover:text-white text-sm transition-colors"
+                  >Services</a
+                >
+              </li>
+              <li>
+                <a
+                  href="about.html"
+                  class="text-slate-300 hover:text-white text-sm transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  class="text-slate-300 hover:text-white text-sm transition-colors"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div >
+            <h4 class="text-red-400 font-bold text-sm mb-5">Contact Us</h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="mailto:contact@eprescribe.co.in"
+                  class="text-slate-300 hover:text-white text-sm"
+                  >contact@eprescribe.co.in</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tel:919702053758"
+                  class="text-slate-300 hover:text-white text-sm"
+                  >919702053758</a
+                >
+              </li>
+              <li>
+                <p class="text-slate-300 text-sm">
+                  11/1908, Sunteck MaXXWorld, Tivri, Naigaon East, Mumbai,
+                  Maharashtra 401208
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 border-red-800/30"
+        >
+          <p class="text-slate-300 text-xs">
+            © 2026 ePrescribe. All rights reserved.
+          </p>
+          <div class="flex items-center gap-2">
+            <span
+              class="w-1.5 h-1.5 rounded-full pulse-green"
+              style="background: #dc2626"
+            ></span
+            ><span class="text-slate-300 text-xs">All systems operational</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- LOGIN MODAL unchanged (red/white spirit inside) -->
+    <div
+      id="login-modal"
+      class="fixed inset-0 z-[999] flex items-center justify-center p-4"
+      style="display: none !important"
+    >
+      <div
+        onclick="closeLoginModal()"
+        class="absolute inset-0 bg-gray-900/75 backdrop-blur-sm"
+      ></div>
+      <div
+        class="relative z-10 w-full max-w-sm"
+        style="animation: modalIn 0.4s both"
+      >
+        <div class="flex justify-center" style="margin-bottom: -6px">
+          <svg width="120" height="105" viewBox="0 0 120 105" fill="none">
+            <circle cx="22" cy="32" r="18" fill="#1a1a2e" />
+            <circle cx="22" cy="32" r="11" fill="#2d2d44" />
+            <circle cx="98" cy="32" r="18" fill="#1a1a2e" />
+            <circle cx="98" cy="32" r="11" fill="#2d2d44" />
+            <rect x="8" y="72" width="18" height="12" rx="6" fill="#3a3a5c" />
+            <rect x="94" y="72" width="18" height="12" rx="6" fill="#3a3a5c" />
+            <ellipse cx="60" cy="62" rx="42" ry="40" fill="white" />
+            <ellipse cx="43" cy="56" rx="14" ry="13" fill="#1a1a2e" />
+            <ellipse cx="77" cy="56" rx="14" ry="13" fill="#1a1a2e" />
+            <ellipse cx="43" cy="55" rx="8" ry="8" fill="white" />
+            <ellipse cx="77" cy="55" rx="8" ry="8" fill="white" />
+            <circle cx="44" cy="55" r="5" fill="#1a1a2e" />
+            <circle cx="78" cy="55" r="5" fill="#1a1a2e" />
+            <circle cx="46" cy="53" r="2" fill="white" />
+            <circle cx="80" cy="53" r="2" fill="white" />
+            <ellipse
+              cx="30"
+              cy="70"
+              rx="9"
+              ry="6"
+              fill="#ffb3c6"
+              opacity=".7"
+            />
+            <ellipse
+              cx="90"
+              cy="70"
+              rx="9"
+              ry="6"
+              fill="#ffb3c6"
+              opacity=".7"
+            />
+            <ellipse cx="60" cy="68" rx="6" ry="4" fill="#e8e8e8" />
+            <path
+              d="M53 76 Q60 84 67 76"
+              stroke="#555"
+              stroke-width="2.5"
+              fill="none"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+        <div class="bg-white rounded-2xl shadow-2xl px-8 pt-6 pb-8 relative">
+          <button
+            onclick="closeLoginModal()"
+            class="absolute top-3 right-4 text-gray-400 hover:text-red-600 text-xl font-bold"
+          >
+            &times;
+          </button>
+          <div class="mb-5">
+            <label class="block text-gray-800 font-bold text-sm mb-2"
+              >Email:</label
+            ><input
+              type="email"
+              placeholder="Email here..."
+              class="w-full border-0 border-b-2 border-gray-200 focus:border-red-500 outline-none py-2 text-gray-700 text-sm bg-transparent"
+            />
+          </div>
+          <div class="mb-7 relative">
+            <label class="block text-gray-800 font-bold text-sm mb-2"
+              >Password:</label
+            ><input
+              id="pwd-input"
+              type="password"
+              placeholder="Password here..."
+              class="w-full border-0 border-b-2 border-gray-200 focus:border-red-500 outline-none py-2 text-gray-700 text-sm bg-transparent pr-8"
+            /><button
+              type="button"
+              onclick="togglePwd()"
+              class="absolute right-0 bottom-2 text-gray-400 hover:text-red-600"
+            >
+              <svg
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            </button>
+          </div>
+          <button
+            class="w-full font-black uppercase tracking-widest py-4 rounded-full text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg bg-red-600 text-white shadow-md"
+          >
+            Login
+          </button>
+          <p class="text-center mt-4">
+            <a
+              href="#"
+              class="text-sm font-medium text-red-600 hover:opacity-75"
+              >Forgot Password</a
+            >
+          </p>
+        </div>
+        <div class="flex justify-center gap-10 mt-1">
+          <svg width="38" height="22" viewBox="0 0 38 22">
+            <ellipse cx="19" cy="11" rx="16" ry="10" fill="#d1d5db" />
+            <ellipse cx="10" cy="17" rx="5" ry="4" fill="white" opacity=".9" />
+            <ellipse cx="19" cy="19" rx="5" ry="4" fill="white" opacity=".9" />
+            <ellipse
+              cx="28"
+              cy="17"
+              rx="5"
+              ry="4"
+              fill="white"
+              opacity=".9"
+            /></svg>
+          <svg width="38" height="22" viewBox="0 0 38 22">
+            <ellipse cx="19" cy="11" rx="16" ry="10" fill="#d1d5db" />
+            <ellipse cx="10" cy="17" rx="5" ry="4" fill="white" opacity=".9" />
+            <ellipse cx="19" cy="19" rx="5" ry="4" fill="white" opacity=".9" />
+            <ellipse cx="28" cy="17" rx="5" ry="4" fill="white" opacity=".9" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <button
+      id="scrolltop"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    >
+      <svg
+        class="w-5 h-5 text-white"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2.5"
+          d="M5 15l7-7 7 7"
+        />
+      </svg>
+    </button>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        once: true,
+        offset: 60,
+        easing: "ease-out-cubic",
+        duration: 680,
+      });
+      function openLoginModal() {
+        document.getElementById("login-modal").style.display = "flex";
+        document.body.style.overflow = "hidden";
+      }
+      function closeLoginModal() {
+        document.getElementById("login-modal").style.display = "none";
+        document.body.style.overflow = "";
+      }
+      function togglePwd() {
+        const i = document.getElementById("pwd-input");
+        i.type = i.type === "password" ? "text" : "password";
+      }
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") closeLoginModal();
+      });
+      document.querySelectorAll(".faq-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const item = btn.closest(".faq-item");
+          const ans = item.querySelector(".faq-answer");
+          const icon = btn.querySelector(".faq-icon");
+          const isOpen = ans.classList.contains("open");
+          document
+            .querySelectorAll(".faq-answer")
+            .forEach((a) => a.classList.remove("open"));
+          document
+            .querySelectorAll(".faq-icon")
+            .forEach((i) => i.classList.remove("open"));
+          document
+            .querySelectorAll(".faq-item")
+            .forEach((i) => i.classList.remove("faq-open"));
+          if (!isOpen) {
+            ans.classList.add("open");
+            icon.classList.add("open");
+            item.classList.add("faq-open");
+          }
+        });
+      });
+    </script>
+  </body>
 </html>

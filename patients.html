@@ -1,0 +1,816 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>For Patients - ePrescribe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css"/>
+    
+    <style>
+      html,
+      body {
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+        width: 100%;
+        max-width: 100vw;
+        background: #fff;
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        color: #111827;
+        -webkit-font-smoothing: antialiased;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      section,
+      footer,
+      nav {
+        overflow-x: hidden;
+        max-width: 100%;
+      }
+      img,
+      svg {
+        max-width: 100%;
+        height: auto;
+      }
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #dc2626;
+        border-radius: 3px;
+      }
+      .gt {
+        background: linear-gradient(135deg, #dc2626, #ef4444);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: #fff1f1;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        padding: 0.35rem 0.9rem;
+        border-radius: 999px;
+      }
+      .nav-link {
+        position: relative;
+        font-weight: 600;
+        font-size: 0.875rem;
+        color: #111827;
+        transition: color 0.25s;
+      }
+      .nav-link:hover {
+        color: #dc2626;
+      }
+      .nav-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: #dc2626;
+        border-radius: 2px;
+        transition: width 0.3s;
+      }
+      .nav-link:hover::after {
+        width: 100%;
+      }
+      .hb-bar {
+        display: block;
+        width: 22px;
+        height: 2px;
+        background: #111827;
+        border-radius: 2px;
+        transition:
+          transform 0.3s,
+          opacity 0.3s;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .fu {
+        animation: fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
+      }
+      .fu2 {
+        animation: fadeUp 0.6s 0.12s cubic-bezier(0.23, 1, 0.32, 1) both;
+      }
+      .fu3 {
+        animation: fadeUp 0.6s 0.24s cubic-bezier(0.23, 1, 0.32, 1) both;
+      }
+      .fu4 {
+        animation: fadeUp 0.6s 0.36s cubic-bezier(0.23, 1, 0.32, 1) both;
+      }
+      @keyframes pulse-ring {
+        0% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.5);
+        }
+        70% {
+          transform: scale(1);
+          box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+        }
+        100% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+        }
+      }
+      .pulse-ring {
+        animation: pulse-ring 2.5s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      .float-anim {
+        animation: float 4s ease-in-out infinite;
+      }
+      @keyframes chatBounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-6px);
+        }
+      }
+      .chat-bounce {
+        animation: chatBounce 2s ease-in-out infinite;
+      }
+      @keyframes pulse-ring-red {
+        0%   { transform: scale(.9); box-shadow: 0 0 0 0 rgba(220,38,38,.6); }
+        70%  { transform: scale(1);  box-shadow: 0 0 0 8px rgba(220,38,38,0); }
+        100% { transform: scale(.9); box-shadow: 0 0 0 0 rgba(220,38,38,0); }
+      }
+      .pulse-ring-red { animation: pulse-ring-red 2s ease-in-out infinite; }
+      .feature-card {
+        background: #fff;
+        border: 1px solid #f3f4f6;
+        border-radius: 18px;
+        padding: 1.5rem;
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #dc2626, #ef4444);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s;
+      }
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 40px rgba(220, 38, 38, 0.1);
+        border-color: #fecaca;
+      }
+      .feature-card:hover::before {
+        transform: scaleX(1);
+      }
+      .footer-grid {
+        display: grid;
+        gap: 2rem;
+      }
+      @media (min-width: 640px) and (max-width: 1023px) {
+        .footer-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (min-width: 1024px) {
+        .footer-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 1023px) {
+        .hero-grid {
+          grid-template-columns: 1fr !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav
+      id="nav"
+      class="fixed top-0 left-0 right-0 z-50 w-full"
+      style="
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 2px 20px rgba(220, 38, 38, 0.08);
+        border-bottom: 1px solid #fee2e2;
+        backdrop-filter: blur(16px);
+      "
+    >
+      <div
+        class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4"
+      >
+        <a href="index.html" class="flex items-center flex-shrink-0">
+          <div
+            class="bg-white rounded-full px-4 py-2"
+            style="box-shadow: 0 2px 12px rgba(220, 38, 38, 0.1)"
+          >
+            <img
+              src="./images/eprescribeLogo.jpg"
+              alt="ePrescribe"
+              class="h-8 sm:h-9 w-auto object-contain"
+            />
+          </div>
+        </a>
+        <div class="hidden md:flex items-center gap-8">
+          <a href="index.html" class="nav-link">Home</a>
+          <a href="services.html" class="nav-link">Services</a>
+          <a href="about.html" class="nav-link">About Us</a>
+          <a href="index.html#contact" class="nav-link">Contact</a>
+        </div>
+        <button
+          id="hbtn"
+          class="md:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 rounded-xl bg-red-50 border border-red-100 cursor-pointer"
+          aria-label="Menu"
+        >
+          <span id="hb1" class="hb-bar"></span>
+          <span id="hb2" class="hb-bar"></span>
+          <span id="hb3" class="hb-bar"></span>
+        </button>
+      </div>
+      <div
+        id="mm"
+        class="md:hidden overflow-hidden w-full"
+        style="
+          max-height: 0;
+          transition: max-height 0.35s ease;
+          background: #fff;
+          border-top: 1px solid #fee2e2;
+        "
+      >
+        <div class="border-t border-red-100 px-4 py-3 flex flex-col gap-1">
+          <a href="index.html"          onclick="cM()" class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all">Home</a>
+          <a href="services.html" onclick="cM()" class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all">Services</a>
+          <a href="about.html"          onclick="cM()" class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all">About Us</a>
+          <a href="index.html#contact"  onclick="cM()" class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all">Contact</a>
+        </div>
+      </div>
+    </nav>
+    <script>
+      var mo = false,
+        mm = document.getElementById("mm"),
+        h1 = document.getElementById("hb1"),
+        h2 = document.getElementById("hb2"),
+        h3 = document.getElementById("hb3");
+      document.getElementById("hbtn").addEventListener("click", function () {
+        mo = !mo;
+        mm.style.maxHeight = mo ? "220px" : "0";
+        h1.style.transform = mo ? "translateY(7px) rotate(45deg)" : "";
+        h2.style.opacity = mo ? "0" : "1";
+        h3.style.transform = mo ? "translateY(-7px) rotate(-45deg)" : "";
+      });
+      function cM() {
+        mo = false;
+        mm.style.maxHeight = "0";
+        h1.style.transform = "";
+        h2.style.opacity = "1";
+        h3.style.transform = "";
+      }
+      window.addEventListener("scroll", function () {
+        if (mo) cM();
+      });
+    </script>
+
+    <!-- HERO -->
+    <section
+      class="relative min-h-screen flex items-center overflow-hidden"
+      style="
+        background: linear-gradient(150deg, #fff 0%, #fff5f5 50%, #fff 100%);
+        padding-top: 80px;
+      "
+    >
+      <div
+        class="absolute rounded-full pointer-events-none"
+        style="
+          width: 500px;
+          height: 500px;
+          top: -100px;
+          right: -150px;
+          background: radial-gradient(
+            circle,
+            rgba(220, 38, 38, 0.07),
+            transparent 70%
+          );
+          filter: blur(40px);
+        "
+      ></div>
+      <div
+        class="absolute rounded-full pointer-events-none"
+        style="
+          width: 400px;
+          height: 400px;
+          bottom: -80px;
+          left: -100px;
+          background: radial-gradient(
+            circle,
+            rgba(239, 68, 68, 0.05),
+            transparent 70%
+          );
+          filter: blur(40px);
+        "
+      ></div>
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="
+          background-image: radial-gradient(
+            circle,
+            #fecaca 1px,
+            transparent 1px
+          );
+          background-size: 32px 32px;
+          opacity: 0.2;
+          mask-image: radial-gradient(
+            ellipse 80% 80% at 50% 50%,
+            black,
+            transparent
+          );
+        "
+      ></div>
+
+      <div
+        class="relative w-full max-w-7xl mx-auto px-4 sm:px-8 py-16 sm:py-20"
+      >
+        <div
+          class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center hero-grid"
+        >
+          <!-- LEFT -->
+          <div class="w-full" data-aos="fade-right" data-aos-duration="800">
+            <div class="badge mb-6 fu">
+              <span
+                class="w-2 h-2 rounded-full flex-shrink-0 pulse-ring"
+                style="background: #dc2626"
+              ></span>
+              For Patients
+            </div>
+            <h1
+              class="font-black leading-tight mb-6 fu2"
+              style="font-size: clamp(2rem, 5vw, 3.6rem); color: #111827"
+            >
+              Your Health,<br /><span class="gt">Smarter &amp; Simpler</span>
+            </h1>
+            <p
+              class="text-gray-500 leading-relaxed mb-8 max-w-lg fu3"
+              style="font-size: clamp(0.95rem, 2vw, 1.05rem)"
+            >
+              Ask health queries, get medical advice, book appointments with
+              specialists, and connect with your doctor — all in one place,
+              powered by AI.
+            </p>
+            <!-- Speak to Us CTA -->
+            <div class="fu4">
+              <a
+                href="https://chat.eprescribe.co.in/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-3 text-white font-bold rounded-2xl transition-all hover:-translate-y-1 mb-5"
+                style="
+                  background: #dc2626;
+                  box-shadow: 0 8px 28px rgba(220, 38, 38, 0.4);
+                  padding: 1rem 1.75rem;
+                  font-size: 1rem;
+                "
+              >
+                <span
+                  class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0"
+                >
+                  <i class="fas fa-comments text-white"></i>
+                </span>
+                <span>
+                  <span
+                    class="block text-xs text-white/70 font-medium leading-tight"
+                    >AI-Powered</span
+                  >
+                  <span class="block font-black leading-tight"
+                    >Speak to Us</span
+                  >
+                </span>
+                <i class="fas fa-arrow-right text-sm ml-1"></i>
+              </a>
+              <p class="text-gray-400 text-xs">
+                <i class="fas fa-shield-halved mr-1" style="color: #dc2626"></i>
+                Secure, private &amp; available 24/7
+              </p>
+            </div>
+          </div>
+
+          <!-- RIGHT: Chat UI -->
+          <div class="flex justify-center lg:justify-end float-anim" data-aos="fade-left" data-aos-duration="800" data-aos-delay="100">
+            <div class="relative w-full" style="max-width: min(420px, 100%)">
+              <div
+                class="absolute -inset-4 rounded-3xl pointer-events-none"
+                style="
+                  background: radial-gradient(
+                    circle,
+                    rgba(220, 38, 38, 0.08),
+                    transparent 70%
+                  );
+                  filter: blur(30px);
+                "
+              ></div>
+              <div
+                class="relative rounded-3xl overflow-hidden shadow-2xl border border-red-100 bg-white"
+              >
+                <!-- Header -->
+                <div
+                  class="px-5 py-4 flex items-center gap-3"
+                  style="background: linear-gradient(135deg, #dc2626, #b91c1c)"
+                >
+                  <div
+                    class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0"
+                  >
+                    <i class="fas fa-robot text-white text-lg"></i>
+                  </div>
+                  <div>
+                    <p class="text-white font-bold text-sm leading-tight">
+                      ePrescribe AI Assistant
+                    </p>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                      <span
+                        class="w-1.5 h-1.5 rounded-full bg-green-400"
+                      ></span>
+                      <span class="text-white/70 text-xs"
+                        >Online · Always available</span
+                      >
+                    </div>
+                  </div>
+                </div>
+                <!-- Messages -->
+                <div class="p-4 space-y-3 bg-gray-50" style="min-height: 260px">
+                  <div class="flex items-start gap-2">
+                    <div
+                      class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style="background: #dc2626"
+                    >
+                      <i class="fas fa-robot text-white text-xs"></i>
+                    </div>
+                    <div
+                      class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 max-w-xs"
+                    >
+                      <p class="text-gray-700 text-sm leading-relaxed">
+                        Hello! I'm your ePrescribe AI assistant. How can I help
+                        you today?
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap gap-2 pl-9">
+                    <span
+                      class="text-xs font-semibold px-3 py-1.5 rounded-full border"
+                      style="color: #dc2626; border-color: #fecaca"
+                      >Ask a health query</span
+                    >
+                    <span
+                      class="text-xs font-semibold px-3 py-1.5 rounded-full border"
+                      style="color: #dc2626; border-color: #fecaca"
+                      >Book appointment</span
+                    >
+                    <span
+                      class="text-xs font-semibold px-3 py-1.5 rounded-full border"
+                      style="color: #dc2626; border-color: #fecaca"
+                      >Find a specialist</span
+                    >
+                  </div>
+                  <div class="flex justify-end">
+                    <div
+                      class="rounded-2xl rounded-tr-sm px-4 py-3 max-w-xs"
+                      style="background: #dc2626"
+                    >
+                      <p class="text-white text-sm">
+                        I need to book an appointment with a cardiologist.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-2">
+                    <div
+                      class="w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                      style="background: #dc2626"
+                    >
+                      <i class="fas fa-robot text-white text-xs"></i>
+                    </div>
+                    <div
+                      class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-gray-100 max-w-xs"
+                    >
+                      <p class="text-gray-700 text-sm leading-relaxed">
+                        I found 3 cardiologists near you. Would you like to see
+                        their availability?
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Input -->
+                <div
+                  class="px-4 py-3 bg-white border-t border-gray-100 flex items-center gap-3"
+                >
+                  <div
+                    class="flex-1 bg-gray-50 rounded-xl px-4 py-2.5 text-sm text-gray-400 border border-gray-100"
+                  >
+                    Type your question...
+                  </div>
+                  <a
+                    href="https://chat.eprescribe.co.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all hover:scale-105"
+                    style="background: #dc2626"
+                  >
+                    <i class="fas fa-paper-plane text-white text-sm"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT YOU CAN DO -->
+    <section class="py-16 sm:py-20 bg-white" data-aos="fade-up">
+      <div class="max-w-7xl mx-auto px-4 sm:px-8">
+        <div class="text-center mb-12">
+          <div class="badge mb-4">What You Can Do</div>
+          <h2
+            class="font-black mb-3"
+            style="font-size: clamp(1.6rem, 3.5vw, 2.5rem); color: #111827"
+          >
+            Everything You Need for Better Health
+          </h2>
+          <p class="text-gray-500 max-w-xl mx-auto text-sm sm:text-base">
+            Our AI-powered platform puts your health in your hands.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="feature-card text-center" data-aos="fade-up" data-aos-delay="0">
+            <div
+              class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              style="background: #fff1f1"
+            >
+              <i
+                class="fas fa-comment-medical text-2xl"
+                style="color: #dc2626"
+              ></i>
+            </div>
+            <h3 class="font-bold text-gray-900 mb-2">Ask Health Queries</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
+              Get instant answers to your health questions from our AI
+              assistant, anytime.
+            </p>
+          </div>
+          <div class="feature-card text-center" data-aos="fade-up" data-aos-delay="100">
+            <div
+              class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              style="background: #fff1f1"
+            >
+              <i class="fas fa-stethoscope text-2xl" style="color: #dc2626"></i>
+            </div>
+            <h3 class="font-bold text-gray-900 mb-2">Medical Advice</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
+              Receive AI-powered medical guidance and understand your symptoms
+              better.
+            </p>
+          </div>
+          <div class="feature-card text-center" data-aos="fade-up" data-aos-delay="200">
+            <div
+              class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              style="background: #fff1f1"
+            >
+              <i
+                class="fas fa-calendar-check text-2xl"
+                style="color: #dc2626"
+              ></i>
+            </div>
+            <h3 class="font-bold text-gray-900 mb-2">Book Appointments</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
+              Find and book appointments with specialists near you in just a few
+              taps.
+            </p>
+          </div>
+          <div class="feature-card text-center" data-aos="fade-up" data-aos-delay="300">
+            <div
+              class="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              style="background: #fff1f1"
+            >
+              <i class="fas fa-user-doctor text-2xl" style="color: #dc2626"></i>
+            </div>
+            <h3 class="font-bold text-gray-900 mb-2">Find Specialists</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">
+              Search and connect with verified doctors and specialists across
+              specialities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SPEAK TO US CTA -->
+    <section
+      class="py-16 sm:py-20 relative overflow-hidden" 
+      style="
+        background: linear-gradient(
+          135deg,
+          #7f1d1d 0%,
+          #dc2626 50%,
+          #ef4444 100%
+        );
+      "
+    >
+      <div
+        class="absolute inset-0 pointer-events-none"
+        style="
+          background-image: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 0.06) 1px,
+            transparent 1px
+          );
+          background-size: 28px 28px;
+        "
+      ></div>
+      <div class="max-w-3xl mx-auto px-4 sm:px-8 text-center relative" data-aos="zoom-in-up">
+        <div
+          class="w-20 h-20 rounded-3xl bg-white/15 flex items-center justify-center mx-auto mb-6 chat-bounce"
+        >
+          <i class="fas fa-comments text-white text-3xl"></i>
+        </div>
+        <h2
+          class="font-black text-white mb-4"
+          style="font-size: clamp(1.6rem, 3.5vw, 2.5rem)"
+        >
+          Talk to Our AI Assistant
+        </h2>
+        <p class="text-white/70 mb-8 text-sm sm:text-base max-w-xl mx-auto">
+          Ask your health queries, get medical advice, find doctors and book
+          appointments — all through a simple conversation.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <a
+            href="https://chat.eprescribe.co.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-3 font-bold px-8 py-4 rounded-2xl transition-all hover:-translate-y-0.5 text-base"
+            style="background:#fff;color:#dc2626;box-shadow:0 6px 24px rgba(0,0,0,.15)"
+          >
+            <i class="fas fa-comments"></i> Speak to Us
+          </a>
+          <a
+            href="tel:919702053758"
+            class="inline-flex items-center justify-center gap-3 font-bold px-8 py-4 rounded-2xl transition-all hover:-translate-y-0.5 text-base"
+            style="background:#fff;color:#dc2626;box-shadow:0 6px 24px rgba(0,0,0,.15)"
+          >
+            <i class="fas fa-phone"></i> Connect Now
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="background: #0f172a; color: #fff" class="pt-14 pb-8">
+      <div class="max-w-7xl mx-auto px-5 sm:px-6">
+        <div class="footer-grid mb-12">
+          <div>
+            <a href="#" class="inline-flex mb-5"
+              ><div class="bg-white rounded-full px-4 py-2 shadow-lg">
+                <img
+                  src="./images/eprescribeLogo.jpg"
+                  alt="ePrescribe"
+                  class="h-8 sm:h-9 w-auto"
+                /></div
+            ></a>
+            <p class="text-slate-300 text-sm max-w-xs mb-6">
+              A secure, cloud-based clinic management platform with AI-powered
+              prescriptions, billing, appointments, and digital records — all
+              paperless.
+            </p>
+            <div class="flex gap-3">
+              <a href="https://wa.me/919702053758" target="_blank" rel="noopener noreferrer"
+                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
+                style="background:#dc2626">
+                <i class="fab fa-whatsapp text-white text-lg"></i>
+              </a>
+              <a href="mailto:contact@eprescribe.co.in"
+                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
+                style="background:#dc2626">
+                <i class="fas fa-envelope text-white text-sm"></i>
+              </a>
+              <a href="tel:9702053758"
+                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
+                style="background:#dc2626">
+                <i class="fas fa-phone text-white text-sm"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-red-400 font-bold text-sm mb-5">Quick Links</h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="index.html"
+                  class="text-slate-300 hover:text-white text-sm transition-colors"
+                  >Home</a
+                >
+              </li>
+              <li>
+                <a
+                  href="services.html"
+                  class="text-slate-300 hover:text-white text-sm transition-colors"
+                  >Services</a
+                >
+              </li>
+              <li>
+                <a
+                  href="about.html"
+                  class="text-slate-300 hover:text-white text-sm transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#contact"
+                  class="text-slate-300 hover:text-white text-sm transition-colors"
+                  >Contact</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-red-400 font-bold text-sm mb-5">Contact Us</h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="mailto:contact@eprescribe.co.in"
+                  class="text-slate-300 hover:text-white text-sm"
+                  >contact@eprescribe.co.in</a
+                >
+              </li>
+              <li>
+                <a
+                  href="tel:919702053758"
+                  class="text-slate-300 hover:text-white text-sm"
+                  >919702053758</a
+                >
+              </li>
+              <li>
+                <p class="text-slate-300 text-sm">
+                  11/1908, Sunteck MaXXWorld, Tivri, Naigaon East, Mumbai,
+                  Maharashtra 401208
+                </p>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="border-t pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 border-red-800/30"
+        >
+          <p class="text-slate-300 text-xs">
+            © 2026 ePrescribe. All rights reserved.
+          </p>
+          <div class="flex items-center gap-2">
+            <span
+              class="w-2 h-2 rounded-full pulse-ring-red"
+              style="background: #dc2626"
+            ></span>
+            <span class="text-slate-300 text-xs">All systems operational</span>
+          </div>
+        </div>
+      </div>
+    </footer>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>AOS.init({duration:700,once:true,offset:60});</script>
+  </body>
+</html>
