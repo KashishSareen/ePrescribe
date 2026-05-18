@@ -879,33 +879,40 @@
         </div>
       </div>
     </nav>
-    <script>
-      const navbar = document.getElementById("navbar"),
-        mm = document.getElementById("mobile-menu");
-      const hb1 = document.getElementById("hb1"),
-        hb2 = document.getElementById("hb2"),
-        hb3 = document.getElementById("hb3");
-      let menuOpen = false;
-      window.addEventListener("scroll", () => {
-        document
-          .getElementById("scrolltop")
-          .classList.toggle("visible", window.scrollY > 400);
-        if (menuOpen) closeMobileMenu();
-      });
-      document.getElementById("hamburger").addEventListener("click", () => {
-        menuOpen = !menuOpen;
-        mm.style.maxHeight = menuOpen ? "260px" : "0";
-        hb1.style.transform = menuOpen ? "translateY(7px) rotate(45deg)" : "";
-        hb2.style.opacity = menuOpen ? "0" : "1";
-        hb3.style.transform = menuOpen ? "translateY(-7px) rotate(-45deg)" : "";
-      });
-      function closeMobileMenu() {
-        menuOpen = false;
-        mm.style.maxHeight = "0";
-        hb1.style.transform = "";
-        hb2.style.opacity = "1";
-        hb3.style.transform = "";
+     <script>
+      var mo = false,
+        mm = document.getElementById("mobile-menu"),
+        h1 = document.getElementById("hb1"),
+        h2 = document.getElementById("hb2"),
+        h3 = document.getElementById("hb3"),
+        hbtn = document.getElementById("hamburger");
+      if (hbtn) {
+        hbtn.addEventListener("click", function () {
+          if (!mm || !h1 || !h2 || !h3) return;
+          mo = !mo;
+          mm.style.maxHeight = mo ? "220px" : "0";
+          h1.style.transform = mo ? "translateY(7px) rotate(45deg)" : "";
+          h2.style.opacity = mo ? "0" : "1";
+          h3.style.transform = mo ? "translateY(-7px) rotate(-45deg)" : "";
+        });
       }
+      function cM() {
+        if (!mm || !h1 || !h2 || !h3) return;
+        mo = false;
+        mm.style.maxHeight = "0";
+        h1.style.transform = "";
+        h2.style.opacity = "1";
+        h3.style.transform = "";
+      }
+      function closeMobileMenu() {
+        cM();
+      }
+      window.addEventListener("scroll", function () {
+        if (mo) cM();
+      }, { passive: true });
+      document.addEventListener("scroll", function () {
+        if (mo) cM();
+      }, { passive: true });
     </script>
 
     <!-- HERO (white background, red elements) -->
@@ -2454,8 +2461,10 @@
       document.querySelectorAll(".faq-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
           const item = btn.closest(".faq-item");
+          if (!item) return;
           const ans = item.querySelector(".faq-answer");
           const icon = btn.querySelector(".faq-icon");
+          if (!ans || !icon) return;
           const isOpen = ans.classList.contains("open");
           document
             .querySelectorAll(".faq-answer")
