@@ -7,6 +7,13 @@
       content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover"
     />
     <title>About Us – ePrescribe | Red & White Edition</title>
+    <meta name="description" content="About ePrescribe - Learn about our mission to revolutionize clinic management with innovative prescription and healthcare management solutions.">
+    <meta name="keywords" content="About ePrescribe, clinic management software, healthcare technology, prescription management, our mission">
+    <meta name="author" content="ePrescribe Team">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="About Us – ePrescribe">
+    <meta property="og:description" content="Learn about ePrescribe's mission and vision for healthcare management.">
+    <meta property="og:type" content="website">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -192,6 +199,44 @@
         text-align: center;
         transition: all 0.3s;
       }
+
+      /* WhatsApp Button */
+      .whatsapp-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #25d366 0%, #20ba58 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        z-index: 1000;
+        text-decoration: none;
+      }
+      .whatsapp-btn:hover {
+        transform: scale(1.15);
+        box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
+      }
+      .whatsapp-btn i {
+        color: #fff;
+        font-size: 28px;
+      }
+      @media (max-width: 768px) {
+        .whatsapp-btn {
+          bottom: 20px;
+          right: 20px;
+          width: 55px;
+          height: 55px;
+        }
+        .whatsapp-btn i {
+          font-size: 24px;
+        }
+      }
       .stat-box:hover {
         border-color: #fecaca;
         box-shadow: 0 8px 24px rgba(220, 38, 38, 0.08);
@@ -237,7 +282,7 @@
     </style>
   </head>
   <body>
-    <!-- NAVBAR (Red & White) -->
+    <!-- NAVBAR  -->
     <nav
       id="nav"
       class="fixed top-0 left-0 right-0 z-50 w-full"
@@ -267,7 +312,7 @@
           <a href="index.html" class="nav-link">Home</a>
           <a href="services.html" class="nav-link">Services</a>
           <a href="about.html" class="nav-link active">About Us</a>
-          <a href="index.html#contact" class="nav-link">Contact</a>
+          <a href="contact.html" class="nav-link">Contact</a>
         </div>
         <button
           id="hbtn"
@@ -309,7 +354,7 @@
             >About Us</a
           >
           <a
-            href="index.html#contact"
+            href="contact.html"
             onclick="cM()"
             class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
             >Contact</a
@@ -342,7 +387,7 @@
       });
     </script>
 
-    <!-- HERO BANNER (red/white gradient) -->
+    <!-- HERO BANNER  -->
     <section
       class="pt-28 pb-16 sm:pt-32 sm:pb-20 relative overflow-hidden"
       style="
@@ -406,13 +451,13 @@
         <!-- Stats (red accents) -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-10 fu4" data-aos="fade-up" data-aos-delay="300">
           <div class="stat-box">
-            <div class="font-black text-2xl sm:text-3xl gt mb-1">500+</div>
+            <div class="font-black text-2xl sm:text-3xl gt mb-1">50+</div>
             <div class="text-xs font-semibold text-gray-500">
               Clinics Onboarded
             </div>
           </div>
           <div class="stat-box">
-            <div class="font-black text-2xl sm:text-3xl gt mb-1">14K+</div>
+            <div class="font-black text-2xl sm:text-3xl gt mb-1">70+</div>
             <div class="text-xs font-semibold text-gray-500">
               Doctors Supported
             </div>
@@ -431,7 +476,7 @@
       </div>
     </section>
 
-    <!-- ABOUT SECTION (red/white) -->
+    <!-- ABOUT SECTION ) -->
     <section class="py-16 sm:py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-8">
         <div class="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -634,7 +679,7 @@
       </div>
     </section>
 
-    <!-- MISSION & VISION (red gradient backdrop) -->
+    <!-- MISSION & VISION  -->
     <section
       class="py-16 sm:py-24 relative overflow-hidden"
       style="
@@ -795,7 +840,7 @@
       </div>
     </section>
 
-    <!-- VALUES (red icons, red border hover) -->
+    <!-- VALUES  -->
     <section class="py-16 sm:py-20 bg-white">
       <div class="max-w-7xl mx-auto px-4 sm:px-8">
         <div class="text-center mb-12">
@@ -917,7 +962,7 @@
       </div>
     </section>
 
-    <!-- CTA (red gradient similar to index) -->
+    <!-- CTA  -->
     <section
       class="py-16 sm:py-20 relative overflow-hidden"
       style="
@@ -980,7 +1025,7 @@
       </div>
     </section>
 
-    <!-- FOOTER (dark with red accents) -->
+    <!-- FOOTER  -->
     <footer style="background: #0f172a; color: #fff" class="pt-14 pb-8">
       <div class="max-w-7xl mx-auto px-4 sm:px-6">
         <div
@@ -1004,31 +1049,48 @@
               prescriptions, billing, appointments, and digital records — all
               paperless.
             </p>
-            <div class="flex items-center gap-3">
-              <a
-                href="https://wa.me/919702053758"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
-                style="background: #dc2626"
-              >
-                <i class="fab fa-whatsapp text-white text-lg"></i>
-              </a>
-              <a
-                href="mailto:contact@eprescribe.co.in"
-                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
-                style="background: #dc2626"
-              >
-                <i class="fas fa-envelope text-white text-sm"></i>
-              </a>
-              <a
-                href="tel:9702053758"
-                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
-                style="background: #dc2626"
-              >
-                <i class="fas fa-phone text-white text-sm"></i>
-              </a>
-            </div>
+             <!-- Social Icons -->
+        <div class="flex items-center flex-wrap gap-3">
+         
+
+
+          <!-- Instagram -->
+          <a
+            href="https://www.instagram.com/eprescribeindia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-1 transition-all duration-300"
+            style="background: #dc2626"
+          >
+            <i class="fab fa-instagram text-white text-lg"></i>
+          </a>
+
+        
+
+          <!-- LinkedIn -->
+          <a
+            href="https://www.linkedin.com/company/eprescribeindia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-1 transition-all duration-300"
+            style="background: #dc2626"
+          >
+            <i class="fab fa-linkedin-in text-white text-sm"></i>
+          </a>
+
+          <!-- YouTube -->
+          <a
+            href="https://www.youtube.com/@eprescribe"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-1 transition-all duration-300"
+            style="background: #dc2626"
+          >
+            <i class="fab fa-youtube text-white text-sm"></i>
+          </a>
+
+         
+        </div>
           </div>
 
           <!-- Quick Links -->
@@ -1058,7 +1120,7 @@
               </li>
               <li>
                 <a
-                  href="index.html#contact"
+                  href="contact.html"
                   class="text-slate-300 hover:text-white text-sm transition-colors"
                   >Contact</a
                 >
@@ -1129,5 +1191,10 @@
     <script>
       AOS.init({ once: true, offset: 40, duration: 600 });
     </script>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/97155528687?text=Hi!%20I%20want%20to%20build%20an%20AI%20chatbot%20for%20my%20website.%20Can%20you%20please%20help%20me%20get%20started?" target="_blank" rel="noopener noreferrer" class="whatsapp-btn" title="Contact us on WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
   </body>
 </html>

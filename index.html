@@ -6,7 +6,15 @@
       name="viewport"
       content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=yes,viewport-fit=cover"
     />
+   
     <title>ePrescribe – Smart Clinic Management | Red & White Edition</title>
+    <meta name="description" content="ePrescribe - Smart clinic management software. Streamline prescriptions, patient records, and healthcare operations with our innovative platform.">
+    <meta name="keywords" content="ePrescribe, clinic management, prescription software, healthcare, patient records, digital prescriptions">
+    <meta name="author" content="ePrescribe Team">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="ePrescribe – Smart Clinic Management">
+    <meta property="og:description" content="Smart clinic management software for prescriptions and patient records.">
+    <meta property="og:type" content="website">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -304,6 +312,44 @@
         text-transform: uppercase;
         padding: 0.35rem 0.9rem;
         border-radius: 999px;
+      }
+
+      /* WhatsApp Button */
+      .whatsapp-btn {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #25d366 0%, #20ba58 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+        z-index: 1000;
+        text-decoration: none;
+      }
+      .whatsapp-btn:hover {
+        transform: scale(1.15);
+        box-shadow: 0 8px 24px rgba(37, 211, 102, 0.6);
+      }
+      .whatsapp-btn i {
+        color: #fff;
+        font-size: 28px;
+      }
+      @media (max-width: 768px) {
+        .whatsapp-btn {
+          bottom: 20px;
+          right: 20px;
+          width: 55px;
+          height: 55px;
+        }
+        .whatsapp-btn i {
+          font-size: 24px;
+        }
       }
       .badge-teal {
         display: inline-flex;
@@ -680,7 +726,8 @@
         background-size: 28px 28px;
         pointer-events: none;
       }
-      .cta-glow {
+     
+     .cta-glow {
         position: absolute;
         border-radius: 50%;
         filter: blur(80px);
@@ -795,7 +842,7 @@
     </style>
   </head>
   <body>
-    <!-- NAVBAR (unchanged) -->
+    <!-- NAVBAR  -->
     <nav
       id="navbar"
       class="fixed top-0 left-0 right-0 z-50 w-full"
@@ -828,7 +875,7 @@
             <a href="#" class="nav-link">Home</a>
             <a href="services.html" class="nav-link">Services</a>
             <a href="about.html" class="nav-link">About Us</a>
-            <a href="#contact" class="nav-link">Contact</a>
+            <a href="contact.html" class="nav-link">Contact</a>
           </div>
           <button
             id="hamburger"
@@ -871,7 +918,7 @@
             >About Us</a
           >
           <a
-            href="#contact"
+            href="contact.html"
             onclick="closeMobileMenu()"
             class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
             >Contact</a
@@ -915,7 +962,7 @@
       }, { passive: true });
     </script>
 
-    <!-- HERO (white background, red elements) -->
+    <!-- HERO  -->
     <section class="hero-bg relative min-h-screen flex items-center">
       <div class="hero-mesh"></div>
       <div class="hero-dots"></div>
@@ -1020,14 +1067,14 @@
               data-aos-delay="400"
             >
               <div>
-                <p class="text-2xl font-black text-red-600">500+</p>
+                <p class="text-2xl font-black text-red-600">50+</p>
                 <p class="text-xs text-gray-400 font-medium">
                   Clinics Onboarded
                 </p>
               </div>
               <div class="w-px bg-gray-100"></div>
               <div>
-                <p class="text-2xl font-black text-red-500">1M+</p>
+                <p class="text-2xl font-black text-red-500">100+</p>
                 <p class="text-xs text-gray-400 font-medium">
                   Prescriptions Generated
                 </p>
@@ -1183,7 +1230,7 @@
       </div>
     </section>
 
-    <!-- TRUST TICKER (red/white) -->
+    <!-- TRUST TICKER  -->
     <section
       class="py-4 border-b border-gray-100"
       style="background: linear-gradient(90deg, #fff5f5, #ffffff, #fff5f5)"
@@ -1220,7 +1267,7 @@
       </div>
     </section>
 
-    <!-- FEATURES (red border hover) -->
+    <!-- FEATURES -->
     <section
       id="features"
       class="py-24"
@@ -1229,7 +1276,7 @@
       "
     >
       <div class="max-w-7xl mx-auto px-5 sm:px-6">
-        <div class="text-center mb-16" data-aos="fade-up">
+        <div class="text-center mb-16" data-aos="flip-up" >
           <div class="badge mx-auto mb-4">Complete Suite</div>
           <h2 class="text-4xl lg:text-5xl font-black text-gray-900 mb-4">
             Complete Clinic <span class="gt">Management Suite</span>
@@ -1422,16 +1469,19 @@
               instant access to complete patient records.
             </p>
           </div>
-          <div class="feature-card" data-aos="fade-up" data-aos-delay="900">
-            <div class="feature-icon"><span class="text-2xl">📡</span></div>
-            <h3 class="font-bold text-gray-900 mb-2 text-sm">
-              RFID Attendance Device
-            </h3>
-            <p class="text-gray-600 text-xs">
-              Smart RFID device for hospitals &amp; clinics — automates staff
-              attendance, tracks in/out time in real-time.
-            </p>
-          </div>
+   <div class="feature-card" data-aos="fade-up" data-aos-delay="900">
+  <div class="feature-icon"><span class="text-2xl">📡</span></div>
+
+  <h3 class="font-bold text-gray-900 mb-2 text-sm">
+    RFID / NFC ID Cards Based Attendance
+  </h3>
+
+  <p class="text-gray-600 text-xs">
+    Smart RFID/NFC attendance device for hospitals &amp; clinics — enables
+    fast staff check-in/check-out using ID cards while tracking attendance
+    and real-time in/out activity automatically.
+  </p>
+</div>
           <div class="feature-card" data-aos="fade-up" data-aos-delay="950">
   <div class="feature-icon"><span class="text-2xl">💊</span></div>
   <h3 class="font-bold text-gray-900 mb-2 text-sm">
@@ -1446,7 +1496,7 @@
       </div>
     </section>
 
-    <!-- WHY EPRESCRIBE red/white -->
+    <!-- WHY EPRESCRIBE  -->
     <section class="py-20 border-t border-red-100 bg-white">
       <div class="max-w-7xl mx-auto px-5 sm:px-6">
         <div class="text-center mb-14">
@@ -1634,7 +1684,7 @@
       </div>
     </section>
 
-    <!-- AI SECTION (red themed) -->
+    <!-- AI SECTION  -->
     <section
       id="ai"
       class="py-24 relative overflow-hidden"
@@ -1710,7 +1760,7 @@
       </div>
     </section>
 
-    <!-- TESTIMONIALS (red border top) -->
+    <!-- TESTIMONIALS  -->
     <section id="about" class="py-24 bg-white">
       <div class="max-w-7xl mx-auto px-5 sm:px-6">
         <div class="text-center mb-16">
@@ -1827,7 +1877,7 @@
       </div>
     </section>
 
-    <!-- HMS (red accents) -->
+    <!-- HMS  -->
     <section id="hms" class="py-24 bg-gradient-to-b from-white to-red-50">
       <div class="max-w-7xl mx-auto px-5 sm:px-6">
         <div class="grid lg:grid-cols-2 gap-16 items-start">
@@ -1988,7 +2038,7 @@
       </div>
     </section>
 
-    <!-- FAQ (red border) -->
+    <!-- FAQ  -->
     <section id="faq" class="py-24 bg-white">
       <div class="max-w-3xl mx-auto px-5 sm:px-8">
         <div class="text-center mb-16">
@@ -2136,7 +2186,7 @@
       </div>
     </section>
 
-    <!-- CTA red gradient -->
+    <!-- CTA  -->
     <section id="contact" class="cta-bg py-24">
       <div class="relative max-w-4xl mx-auto px-5 sm:px-6 text-center"  >
        
@@ -2178,7 +2228,7 @@
       </div>
     </section>
 
-    <!-- FOOTER (dark with red accents) -->
+    <!-- FOOTER  -->
     <footer style="background: #0f172a; color: #fff" class="pt-14 pb-8">
       <div class="max-w-7xl mx-auto px-5 sm:px-6">
         <div class="footer-grid mb-12">
@@ -2196,23 +2246,48 @@
               prescriptions, billing, appointments, and digital records — all
               paperless.
             </p>
-            <div class="flex gap-3">
-              <a href="https://wa.me/919702053758" target="_blank" rel="noopener noreferrer"
-                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
-                style="background:#dc2626">
-                <i class="fab fa-whatsapp text-white text-lg"></i>
-              </a>
-              <a href="mailto:contact@eprescribe.co.in"
-                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
-                style="background:#dc2626">
-                <i class="fas fa-envelope text-white text-sm"></i>
-              </a>
-              <a href="tel:9702053758"
-                class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-0.5 transition-all"
-                style="background:#dc2626">
-                <i class="fas fa-phone text-white text-sm"></i>
-              </a>
-            </div>
+             <!-- Social Icons -->
+        <div class="flex items-center flex-wrap gap-3">
+         
+
+
+          <!-- Instagram -->
+          <a
+            href="https://www.instagram.com/eprescribeindia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-1 transition-all duration-300"
+            style="background: #dc2626"
+          >
+            <i class="fab fa-instagram text-white text-lg"></i>
+          </a>
+
+        
+
+          <!-- LinkedIn -->
+          <a
+            href="https://www.linkedin.com/company/eprescribeindia/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-1 transition-all duration-300"
+            style="background: #dc2626"
+          >
+            <i class="fab fa-linkedin-in text-white text-sm"></i>
+          </a>
+
+          <!-- YouTube -->
+          <a
+            href="https://www.youtube.com/@eprescribe"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="w-10 h-10 rounded-xl flex items-center justify-center hover:-translate-y-1 transition-all duration-300"
+            style="background: #dc2626"
+          >
+            <i class="fab fa-youtube text-white text-sm"></i>
+          </a>
+
+         
+        </div>
           </div>
           <div >
             <h4 class="text-red-400 font-bold text-sm mb-5">Quick Links</h4>
@@ -2240,7 +2315,7 @@
               </li>
               <li>
                 <a
-                  href="#contact"
+                  href="contact.html"
                   class="text-slate-300 hover:text-white text-sm transition-colors"
                   >Contact</a
                 >
@@ -2483,5 +2558,10 @@
         });
       });
     </script>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/97155528687?text=Hi!%20I%20want%20to%20build%20an%20AI%20chatbot%20for%20my%20website.%20Can%20you%20please%20help%20me%20get%20started?" target="_blank" rel="noopener noreferrer" class="whatsapp-btn" title="Contact us on WhatsApp">
+      <i class="fab fa-whatsapp"></i>
+    </a>
   </body>
 </html>
