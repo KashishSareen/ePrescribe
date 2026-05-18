@@ -304,6 +304,7 @@
           <span id="hb3" class="hb-bar"></span>
         </button>
       </div>
+      
 
       <!-- Mobile Menu -->
       <div
@@ -347,6 +348,8 @@
         </div>
       </div>
     </nav>
+
+    
 
     <!-- HERO -->
     <section
@@ -813,45 +816,52 @@
 
     <!-- SCRIPTS -->
     <script>
-      // Mobile menu
-      var mo = false,
-        mm = document.getElementById("mm"),
-        h1 = document.getElementById("hb1"),
-        h2 = document.getElementById("hb2"),
-        h3 = document.getElementById("hb3");
+  // Mobile menu
+  var mo = false,
+    mm = document.getElementById("mm"),
+    h1 = document.getElementById("hb1"),
+    h2 = document.getElementById("hb2"),
+    h3 = document.getElementById("hb3");
 
-      document.getElementById("hbtn").addEventListener("click", function () {
-        mo = !mo;
-        mm.style.maxHeight = mo ? "220px" : "0";
-        h1.style.transform = mo ? "translateY(7px) rotate(45deg)" : "";
-        h2.style.opacity = mo ? "0" : "1";
-        h3.style.transform = mo ? "translateY(-7px) rotate(-45deg)" : "";
-      });
+  document.getElementById("hbtn").addEventListener("click", function () {
+    mo = !mo;
+    mm.style.maxHeight = mo ? "220px" : "0";
+    h1.style.transform = mo ? "translateY(7px) rotate(45deg)" : "";
+    h2.style.opacity = mo ? "0" : "1";
+    h3.style.transform = mo ? "translateY(-7px) rotate(-45deg)" : "";
+  });
 
-      function cM() {
-        mo = false;
-        mm.style.maxHeight = "0";
-        h1.style.transform = "";
-        h2.style.opacity = "1";
-        h3.style.transform = "";
-      }
+  function cM() {
+    mo = false;
+    mm.style.maxHeight = "0";
+    h1.style.transform = "";
+    h2.style.opacity = "1";
+    h3.style.transform = "";
+  }
 
-      // Success Message
-      const form = document.getElementById("contactForm");
-      const successMessage = document.getElementById("successMessage");
+  // Close mobile menu on scroll
+  window.addEventListener("scroll", function () {
+    if (mo) {
+      cM();
+    }
+  });
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+  // Success Message
+  const form = document.getElementById("contactForm");
+  const successMessage = document.getElementById("successMessage");
 
-        successMessage.classList.remove("hidden");
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-        form.reset();
+    successMessage.classList.remove("hidden");
 
-        setTimeout(() => {
-          successMessage.classList.add("hidden");
-        }, 5000);
-      });
-    </script>
+    form.reset();
+
+    setTimeout(() => {
+      successMessage.classList.add("hidden");
+    }, 5000);
+  });
+</script>
 
     <!-- AOS -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
