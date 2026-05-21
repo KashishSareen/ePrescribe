@@ -226,109 +226,166 @@
   </head>
   <body class="antialiased">
     <!-- ========== NAVBAR  ========== -->
-    <nav
-      id="nav"
-      class="fixed top-0 left-0 right-0 z-50 w-full"
-      style="
-        background: rgba(255, 255, 255, 0.98);
-        box-shadow: 0 2px 20px rgba(220, 38, 38, 0.08);
-        border-bottom: 1px solid #fee2e2;
-        backdrop-filter: blur(16px);
-      "
+  <nav
+  id="nav"
+  class="fixed top-0 left-0 right-0 z-50 w-full"
+  style="
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow: 0 2px 20px rgba(220, 38, 38, 0.08);
+    border-bottom: 1px solid #fee2e2;
+    backdrop-filter: blur(16px);
+  "
+>
+  <div
+    class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4"
+  >
+    <!-- Logo -->
+    <a href="index.html" class="flex items-center flex-shrink-0">
+      <div
+        class="bg-white rounded-full px-4 py-2"
+        style="box-shadow: 0 2px 12px rgba(220, 38, 38, 0.1)"
+      >
+        <img
+          src="./images/eprescribeLogo.jpg"
+          alt="ePrescribe"
+          class="h-8 sm:h-9 w-auto object-contain"
+          loading="lazy"
+        />
+      </div>
+    </a>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex items-center gap-8">
+      <a href="index.html" class="nav-link">Home</a>
+
+      <a href="services.html" class="nav-link">Services</a>
+
+      <!-- PRODUCTS MENU ADDED -->
+      <a
+        href="products.html"
+        class="nav-link hover:text-red-600"
+      >
+        Products
+      </a>
+
+      <a href="about.html" class="nav-link">About Us</a>
+
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+
+    <!-- Mobile Button -->
+    <button
+      id="hbtn"
+      class="md:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 rounded-xl bg-red-50 border border-red-100 cursor-pointer"
+      aria-label="Menu"
     >
-      <div
-        class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4"
+      <span id="hb1" class="hb-bar"></span>
+      <span id="hb2" class="hb-bar"></span>
+      <span id="hb3" class="hb-bar"></span>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mm"
+    class="md:hidden overflow-hidden w-full"
+    style="
+      max-height: 0;
+      transition: max-height 0.35s ease;
+      background: #fff;
+      border-top: 1px solid #fee2e2;
+    "
+  >
+    <div class="px-4 py-3 flex flex-col gap-1">
+
+      <!-- Home -->
+      <a
+        href="index.html"
+        onclick="cM()"
+        class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
       >
-        <a href="index.html" class="flex items-center flex-shrink-0">
-          <div
-            class="bg-white rounded-full px-4 py-2"
-            style="box-shadow: 0 2px 12px rgba(220, 38, 38, 0.1)"
-          >
-            <img
-              src="./images/eprescribeLogo.jpg"
-              alt="ePrescribe"
-              class="h-8 sm:h-9 w-auto object-contain"
-            />
-          </div>
-        </a>
-        <div class="hidden md:flex items-center gap-8">
-          <a href="index.html" class="nav-link">Home</a>
-          <a href="services.html" class="nav-link text-red-600">Services</a>
-          <a href="about.html" class="nav-link">About Us</a>
-          <a href="contact.html" class="nav-link">Contact</a>
-        </div>
-        <button
-          id="hbtn"
-          class="md:hidden flex flex-col justify-center items-center gap-[5px] w-10 h-10 rounded-xl bg-red-50 border border-red-100 cursor-pointer"
-          aria-label="Menu"
-        >
-          <span id="hb1" class="hb-bar"></span>
-          <span id="hb2" class="hb-bar"></span>
-          <span id="hb3" class="hb-bar"></span>
-        </button>
-      </div>
-      <div
-        id="mm"
-        class="md:hidden overflow-hidden w-full"
-        style="
-          max-height: 0;
-          transition: max-height 0.35s ease;
-          background: #fff;
-          border-top: 1px solid #fee2e2;
-        "
+        Home
+      </a>
+
+      <!-- Services -->
+      <a
+        href="services.html"
+        onclick="cM()"
+        class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
       >
-        <div class="px-4 py-3 flex flex-col gap-1">
-          <a
-            href="index.html"
-            onclick="cM()"
-            class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
-            >Home</a
-          >
-          <a
-            href="services.html"
-            onclick="cM()"
-            class="text-red-600 bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
-            >Services</a
-          >
-          <a
-            href="about.html"
-            onclick="cM()"
-            class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
-            >About Us</a
-          >
-          <a
-            href="contact.html"
-            onclick="cM()"
-            class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
-            >Contact</a
-          >
-        </div>
-      </div>
-    </nav>
-    <script>
-      var mo = false,
-        mm = document.getElementById("mm"),
-        h1 = document.getElementById("hb1"),
-        h2 = document.getElementById("hb2"),
-        h3 = document.getElementById("hb3");
-      document.getElementById("hbtn").addEventListener("click", function () {
-        mo = !mo;
-        mm.style.maxHeight = mo ? "220px" : "0";
-        h1.style.transform = mo ? "translateY(7px) rotate(45deg)" : "";
-        h2.style.opacity = mo ? "0" : "1";
-        h3.style.transform = mo ? "translateY(-7px) rotate(-45deg)" : "";
-      });
-      function cM() {
-        mo = false;
-        mm.style.maxHeight = "0";
-        h1.style.transform = "";
-        h2.style.opacity = "1";
-        h3.style.transform = "";
-      }
-      window.addEventListener("scroll", function () {
-        if (mo) cM();
-      });
-    </script>
+        Services
+      </a>
+
+      <!-- PRODUCTS ADDED -->
+      <a
+        href="products.html"
+        onclick="cM()"
+        class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
+      >
+        Products
+      </a>
+
+      <!-- About -->
+      <a
+        href="about.html"
+        onclick="cM()"
+        class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
+      >
+        About Us
+      </a>
+
+      <!-- Contact -->
+      <a
+        href="contact.html"
+        onclick="cM()"
+        class="text-gray-700 hover:text-red-600 hover:bg-red-50 px-4 py-3 rounded-xl text-sm font-medium transition-all"
+      >
+        Contact
+      </a>
+    </div>
+  </div>
+</nav>
+   <script>
+  var mo = false,
+    mm = document.getElementById("mm"),
+    h1 = document.getElementById("hb1"),
+    h2 = document.getElementById("hb2"),
+    h3 = document.getElementById("hb3");
+
+  document.getElementById("hbtn").addEventListener("click", function () {
+    mo = !mo;
+
+    mm.style.maxHeight = mo
+      ? mm.scrollHeight + "px"
+      : "0";
+
+    h1.style.transform = mo
+      ? "translateY(7px) rotate(45deg)"
+      : "";
+
+    h2.style.opacity = mo ? "0" : "1";
+
+    h3.style.transform = mo
+      ? "translateY(-7px) rotate(-45deg)"
+      : "";
+  });
+
+  function cM() {
+    mo = false;
+
+    mm.style.maxHeight = "0";
+
+    h1.style.transform = "";
+
+    h2.style.opacity = "1";
+
+    h3.style.transform = "";
+  }
+
+  window.addEventListener("scroll", function () {
+    if (mo) cM();
+  });
+</script>
 
     <!-- ========== HERO SECTION  ========== -->
     <section
